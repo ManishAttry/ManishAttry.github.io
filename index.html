@@ -1,24 +1,42 @@
+
+<!DOCTYPE html>
 <html lang="en">
- <head> 
- <meta name="title" content="WebShare | Link">
-<meta name="description" content="WebShare | Discover a new way to share our content with Anyone">
+  <head>
+    <meta charset="utf-8">
+    <title>WebShare | Uploader</title>
+    <!-- SEO Meta Tags-->
+    <meta name="title" content="WebShare | Uploader">    
+    <meta name="description" content="Discover a new way to share your wildest ideas and content.">
+    <meta name="keywords" content="9999110668,Manishattry,www.manishattry.blogspot.com,https://manishattry.blogspot.com/,Manishattry,Manishattri,Shiv Footwear,shiv, footwear,http://shivfamilyfootwear.business.site,https://shivfootwear.blogspot.com, manishchaudhary440@gmail.com,Share,link, Manish Chaudhary,Shiv Footwear">
+    <meta name="author" content="Manish Chaudhary">
+    <meta property="og:site_name" content="WebShare | Uploader">
+    <meta property="og:type" content="website">
+    <!-- Viewport-->
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="language" content="English">
+    <meta name="revisit-after" content="1 days">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="mobile-web-app-capable" content="yes">
 
-<meta property="og:site_name" content="WebShare | Link">
-<meta property="og:type" content="website">
-
-<meta name="keywords" content="Manishattry,www.manishattry.blogspot.com,https://manishattry.blogspot.com/,Manishattry,Manishattri,Shiv Footwear,shiv, footwear,http://shivfamilyfootwear.business.site,https://shivfootwear.blogspot.com, manishchaudhary440@gmail.com,Share,link, Manish Chaudhary,shiv footwear">
-<meta name="robots" content="index, follow">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="language" content="English">
-<meta name="revisit-after" content="1 days">
-<meta name="author" content="Manish Chaudhary">
-<meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover">
-<link rel="icon" sizes="192x192" href="https://firebasestorage.googleapis.com/v0/b/manish-attri.appspot.com/o/Site%2FManishAttry%20Logo%20192%C3%97192.jpg?alt=media&token=3b9cfb05-58e5-4c16-8a01-bcc957c5c52d">
-
-     <link href="https://brave.com/static-assets/css/main.min.css" rel="stylesheet"> 
-     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-
-<!-- Page loading styles-->
+    <!-- Favicon and Touch Icons-->
+    <link rel="apple-touch-icon" sizes="180x180" href="https://firebasestorage.googleapis.com/v0/b/manish-attri.appspot.com/o/Site%2FManishAttry%20Logo%20192%C3%97192.jpg?alt=media">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://firebasestorage.googleapis.com/v0/b/manish-attri.appspot.com/o/Site%2FManishAttry%20Logo%20192%C3%97192.jpg?alt=media">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://firebasestorage.googleapis.com/v0/b/manish-attri.appspot.com/o/Site%2FManishAttry%20Logo%20192%C3%97192.jpg?alt=media">
+    <link rel="shortcut icon" type="image/x-icon" href="https://firebasestorage.googleapis.com/v0/b/manish-attri.appspot.com/o/Site%2FManishAttry%20Logo%20192%C3%97192.jpg?alt=media">
+    <link rel="icon" type="image/svg+xml" href="https://around.createx.studio/favicon.svg">
+    <meta name="theme-color" content="white">
+    <!-- Theme mode-->
+    <script>
+      let mode = window.localStorage.getItem('mode'),
+          root = document.getElementsByTagName('html')[0];
+      if (mode !== undefined && mode === 'dark') {
+        root.classList.add('dark-mode');
+      } else {
+        root.classList.remove('dark-mode');
+      }
+    </script>
+    <!-- Page loading styles-->
     <style>
       .page-loading {
         position: fixed;
@@ -35,7 +53,10 @@
         visibility: hidden;
         z-index: 9999;
       }
-      .page-loading.active {
+      .dark-mode .page-loading {
+        background-color: #121519;
+      }
+      .page-oading.active {
         opacity: 1;
         visibility: visible;
       }
@@ -59,7 +80,11 @@
         font-family: 'Inter', sans-serif;
         font-size: 1rem;
         font-weight: normal;
-        color: #737491;
+        color: #6f788b;
+      }
+      .dark-mode .page-loading-inner > span {
+        color: #fff;
+        opacity: .6;
       }
       .page-spinner {
         display: inline-block;
@@ -67,22 +92,35 @@
         height: 2.75rem;
         margin-bottom: .75rem;
         vertical-align: text-bottom;
-        border: .15em solid #766df4;
-        border-right-color: transparent;
+        background-color: #d7dde2; 
         border-radius: 50%;
+        opacity: 0;
         -webkit-animation: spinner .75s linear infinite;
         animation: spinner .75s linear infinite;
       }
+      .dark-mode .page-spinner {
+        background-color: rgba(255,255,255,.25);
+      }
       @-webkit-keyframes spinner {
-        100% {
-          -webkit-transform: rotate(360deg);
-          transform: rotate(360deg);
+        0% {
+          -webkit-transform: scale(0);
+          transform: scale(0);
+        }
+        50% {
+          opacity: 1;
+          -webkit-transform: none;
+          transform: none;
         }
       }
       @keyframes spinner {
-        100% {
-          -webkit-transform: rotate(360deg);
-          transform: rotate(360deg);
+        0% {
+          -webkit-transform: scale(0);
+          transform: scale(0);
+        }
+        50% {
+          opacity: 1;
+          -webkit-transform: none;
+          transform: none;
         }
       }
       
@@ -91,227 +129,632 @@
     <script>
       (function () {
         window.onload = function () {
-          var preloader = document.querySelector('.page-loading');
+          const preloader = document.querySelector('.page-loading');
           preloader.classList.remove('active');
           setTimeout(function () {
             preloader.remove();
-          }, 2000);
+          }, 1500);
         };
-      })();
-      
+      })();  
     </script>
-
-<!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-MD4P382');</script>
-<!-- End Google Tag Manager -->
-
-  </head>
-
-  
+    <!-- Import Google Font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet" id="google-font">
+    <!-- Vendor styles-->
+    <link rel="stylesheet" media="screen" href="https://around.createx.studio/assets/vendor/swiper/swiper-bundle.min.css"/>
+    <link rel="stylesheet" media="screen" href="https://around.createx.studio/assets/vendor/aos/dist/aos.css"/>
+    <!-- Font icons -->    
+    <link rel="stylesheet" href="https://around.createx.studio/assets/icons/around-icons.min.css">
+    <!-- Main Theme Styles + Bootstrap-->
+    <link rel="stylesheet" media="screen" href="https://around.createx.studio/assets/css/theme.min.css">
     
-   <!-- Body-->
- <body class="download-page theme--dark is-mobile"> 
-  <header class="site-header"> 
-   <div class="site-header__inner px-6 lg:px-0 lg:w-48/50 flex flex-wrap sm:flex-no-wrap justify-between items-center h-full mx-auto"> 
-    <a href=""> <img src="https://firebasestorage.googleapis.com/v0/b/manish-attri.appspot.com/o/Site%2FManish%20Chaudhary%20White.svg?alt=media&token=0d772a8e-f7c0-4d15-9cb6-c71f3a61e455" alt="Manish Chaudhary" class="w-20 lg:w-24"> </a> 
-   </div> 
-  </header>
+<!-- Javascript for remove (?m=1)-->    
+<script type='text/javascript' >
+var uri = window.location.toString();
+if (uri.indexOf("?m=1") > 0) {
+var clean_uri = uri.substring(0, uri.indexOf("?m=1"));
+window.history.replaceState({}, document.title, clean_uri);
+}
+</script>
+    
+<link rel="me" href="https://www.blogger.com/profile/03066261754738692986" />
+<meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109'/>
+<meta name='google-adsense-platform-domain' content='blogspot.com'/>
+</head>
+  <!-- Body-->
+  <body>
+
+    <!-- Modal with tabs and forms -->
+<section class="modal" id="modalLong" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <ul class="nav nav-tabs flex-nowrap text-nowrap mb-n2" role="tablist">
+          <li class="nav-item">
+            <a href="#signin" class="nav-link flex-column flex-sm-row px-3 px-sm-4 active" data-bs-toggle="tab" role="tab" aria-selected="true">
+              <i class="ai-cloud-upload me-sm-2 ms-sm-n1"></i>
+              <span class="d-none d-sm-inline">Upload</span>
+              <span class="fs-sm fw-medium d-sm-none pt-1">Upload</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#signup" class="nav-link flex-column flex-sm-row px-3 px-sm-4" data-bs-toggle="tab" role="tab" aria-selected="false">
+              <i class="ai-clipboard me-sm-2 ms-sm-n1"></i>
+              <span class="d-none d-sm-inline">Clipboard</span>
+              <span class="fs-sm fw-medium d-sm-none pt-1">Clipboard</span>
+            </a>
+          </li>
+        </ul>
+        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body tab-content">
+        <form class="tab-pane fade show active mt-n2" id="signin" autocomplete="off">
+          <div class="mb-3 mb-sm-4">
+            <label for="email1" class="form-label"><sup class="text-danger ms-1">* </sup>Name | Topic</label>
+            <input type="email" class="form-control" type="text" placeholder="First name" id="caption" value="John" required>
+          </div>
+          <div class="mb-3 mb-sm-4">
+            <label for="file-input" class="form-label"><sup class="text-danger ms-1">* </sup>File</label>
+            <div>
+              <input class="form-control" type="file" id="files" multiple required>
+            </div>
+          </div>
+         
+           <!-- Progress Bar -->
+            <div class="progress mb-3"><div id="progress-bar" class="progress-bar fw-semibold bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div></div>
+             <button class="btn btn-primary w-100" type="button" id="send"><i class="bx ai-cloud-upload lead mr-2"></i>&nbsp;Upload</button>
+          <p></p><p></p>
+          <!-- Success alert -->
+          <div id="uploading"></div>
+        </form>
   
-  <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MD4P382"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
+
+        <form class="tab-pane fade" id="signup" autocomplete="off">
+        
+          <h3 id="someUser"></h3>
   
+  <div class="input-group">
+  <span class="input-group-text align-self-start mt-1"><i class="ai-message"></i></span>
+  <textarea class="form-control" placeholder="Type your message here..." rows="6" id="input1"></textarea>
+</div>      
+  
+   <p></p>
+  <button type="button" class="btn btn-primary w-100" onclick="changeData1(3)">Change</button>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
     <!-- Page loading spinner-->
     <div class="page-loading active">
       <div class="page-loading-inner">
         <div class="page-spinner"></div><span>Loading...</span>
       </div>
     </div>
+    <!-- Customizer toggler-->
+    <a class="position-fixed top-50 bg-light text-dark fw-medium border rounded-pill shadow text-decoration-none" data-bs-toggle="modal" data-bs-target="#modalLong" target="_blank" rel="noopener" style="right: -1.75rem; margin-top: -1rem; padding: .25rem .75rem; transform: rotate(-90deg); font-size: calc(var(--ar-body-font-size) * .8125); letter-spacing: .075rem; z-index: 1030;"><i class="ai-settings text-primary fs-base me-1 ms-n1"></i>Uploader</a>
+    <!-- Page wrapper-->
     <main class="page-wrapper">
- 
-  
-    <main class="site-main"> 
-   <section class="hero lg:pb-0 swoosh gradient--blurple-purple-with-bat"> 
-    <div class="container"> 
-     <p class="hero__sup-title text-base-rel sm:w-2/3 mx-auto">Our Fastest Website Ever</p> 
-     <h1 class="hero__title text-5xl-rel xs:text-6xl-rel font-semibold">Download</h1> 
-     <p class="hero__sub-title sm:w-3/4 mx-auto text-lg">Discover a new way to share your content around the world. Share files for free.</p>
-     <div class="hero__content mt-0"> 
-      <div class="perfundo mx-auto block my-6 p-0 m-0 blend-unset"> 
-       <a data-show-platform="true" id='changing' class="download perfundo__link btn btn--large btn--white mx-auto block my-6 transition-opacity duration-500" data-build-channel="release" onclick="myFunction()">Available Link</a> 
-      <picture> 
-       <img src="/static-assets/images/optimized/browser-2898x768.png" class="hidden lg:block" alt="Manish Chaudhary" srcset="/static-assets/images/optimized/browser-2898x768.png 2898w, /static-assets/images/optimized/browser-1280x339.png 1280w, /static-assets/images/optimized/browser-980x260.png 980w, /static-assets/images/optimized/browser-480x127.png 480w"> 
-      </picture> 
-     </div>
-    </div> 
-   </section>
-   
-     <!-- FOR Display Another Page  -->
-<iframe frameborder="0" scrolling="yes" class="frameboxlive" src="https://firebasestorage.googleapis.com/v0/b/manish-attri.appspot.com/o/Site%2Fillustration.html?alt=media&token=ba5949aa-1269-459b-9d95-e8d7fa5f7ce0" name="iframe_a" height="640px" width="100%" title="Iframe Manish Chaudhary" style="border:none;"></iframe>
-<script>
-    var iframeUrl = window.location.search.slice(1).replace(/&m=1/g,"").replace(/m=1/g,"");
-        document.getElementsByTagName("iframe")[0].src = iframeUrl ;
-</script>
-
-
-   <div class="container py-12 px-6"> 
-    <section id="highlights" class="flex flex-wrap justify-between py-16"> 
-     
-     
-     <div class="w-full mb-8 sm:mb-0 sm:w-1/3 sm:px-8 text-center"> 
-     <img class="w-36/50 mx-auto mb-6" src="https://firebasestorage.googleapis.com/v0/b/manish-attri.appspot.com/o/Site%2FManish%20Chaudhary%20Colour.svg?alt=media&token=0628c652-4b4d-47ee-a6fb-85126b4704d6" alt="Loading..."> 
-      <p class="text-2xl font-medium font-sans leading-normal">Creator</p> 
-     </div>
-     
-     <div class="w-full mb-8 sm:mb-0 sm:w-1/3 sm:px-8 text-center"> 
-      <img class="w-28/50 mx-auto mb-6" src="https://firebasestorage.googleapis.com/v0/b/manish-attri.appspot.com/o/Site%2Fshare_link.svg?alt=media&token=89a73ab1-33be-4571-9f8a-2508e8abd252" alt="Loading..."> 
-      <p class="text-2xl font-medium font-sans leading-normal">Direct Link</p> 
-     </div>
-     
-     <div class="w-full sm:w-1/3 sm:px-8 text-center">
-     <img class="w-28/50 mx-auto mb-6" src="https://firebasestorage.googleapis.com/v0/b/manish-attri.appspot.com/o/Site%2Fhappy_2021.svg?alt=media&token=2af00eb7-145c-4728-aca6-1376f1619d24" alt="Loading..."> 
-      <p class="text-2xl font-medium font-sans leading-normal">Happy New Year</p> 
-     </div> 
-    </section> 
-    </div>
-    
-    
-    <section id="early-release-versions" class="text-center swoosh--shadow gradient--blurple-purple-with-bat">
-     <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 1466.2 176.7">
-     <path d="M813.8 105.4c112-39.7 177.7-55.5 233.7-61.3 57.1-6 101.5-3.7 130.4-2.2 68.9 3.5 169.4 15.7 288.3 56V0H0v97.4c94.4 30.2 184.9 63.1 318.6 75.1 200.1 17.9 371.8-23.3 495.2-67.1z" fill="#ffffff" />
-     <h2 class="font-medium text-3xl">Interested Facts!</h2> 
-     <p class="lg:w-43/50 mx-auto">New Links are typically introduced in the <a href="">Website</a>. After we will worked out the link's move into Trash. Content is available under Author unless otherwise noted.</p>
-     <p>©Copyright 2021. All rights reserved.</p>
-    </section> 
-   
-  </main>
-
-    
-  <!-- Auto Change Words -->
-           <script src="https://firebasestorage.googleapis.com/v0/b/manish-attri.appspot.com/o/Site%2Fautochange_text.js?alt=media&token=8ce9a853-826f-4ebe-a811-0c499901a027"></script>
-     <script>
-         startChangingText(['Available Link','Available Document' , 'Available Video', 'Available Audio', 'Available Photo'], 3)
-     </script>
-
-
-<!-- JavaScript Costom Redirect part -->
-<script id="countdown7"></script>
-<script type="text/javascript">
-    
-    // Total seconds to wait
-    var seconds = 11;
-    
-    function countdown() {
-        seconds = seconds - 1;
-        if (seconds < 0) {
-            // Chnage your redirection link here
-            window.location = window.location.search.slice(1).replace(/&m=1/g,"").replace(/m=1/g,"");
-        } else {
-            // Update remaining seconds
-            document.getElementById("countdown").innerHTML = seconds;
-            // Count down using javascript
-            window.setTimeout("countdown()", 1000);
+      <!-- Navbar. Remove 'fixed-top' class to make the navigation bar scrollable with the page-->
+      <header class="navbar navbar-expand-lg fixed-top">
+        <div class="container"><a class="navbar-brand pe-sm-3" href="#" data-scroll><span class="text-primary flex-shrink-0 me-2">
+          <img src="https://firebasestorage.googleapis.com/v0/b/manish-attri.appspot.com/o/Site%2FSource%20Code%2FMain%20Website%20Logo.svg?alt=media&token=d0218408-1e04-4993-afef-2700c330f056" width="30" alt="WebShare">
+        </span>WebShare</a>
+          <div class="form-check form-switch mode-switch order-lg-2 me-3 me-lg-4 ms-auto" data-bs-toggle="mode">
+            <input class="form-check-input" type="checkbox" id="theme-mode">
+            <label class="form-check-label" for="theme-mode"><i class="ai-sun fs-lg"></i></label>
+            <label class="form-check-label" for="theme-mode"><i class="ai-moon fs-lg"></i></label>
+          </div><a class="btn btn-primary btn-sm fs-sm order-lg-3 d-none d-sm-inline-flex" href="https://firebasestorage.googleapis.com/v0/b/manish-attri.appspot.com/o/Site%2FItems%2FWebShare%201.13.3.apk?alt=media&token=e04d6882-1237-4739-896c-2c700529e1bf"><i class="ai-download fs-xl me-2 ms-n1"></i>Chat</a>
+          <button class="navbar-toggler ms-sm-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
+          <nav class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav navbar-nav-scroll me-auto" style="--ar-scroll-height: 520px;">
+              
+              <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Pages</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="https://manishattrii.blogspot.com/" target="_blank">Redirect Website</a></li>
+                  <li><a class="dropdown-item" href="https://shivfootwear.blogspot.com/" target="_blank">Shiv Footwear</a></li>
+                  <li class="dropdown"><a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Extra Pages</a>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="https://firebasestorage.googleapis.com/v0/b/manish-attri.appspot.com/o/Old%20Tested%20HTML%2FWeb%20Multiple.html?alt=media&token=04fa1d8b-2bf6-425a-91d6-700c392d63d9" target="_blank">Multiply Practice</a></li>
+                      <li><a class="dropdown-item" href="https://firebasestorage.googleapis.com/v0/b/manish-attri.appspot.com/o/Old%20Tested%20HTML%2FTrain%20Ticket%20Editable.html?alt=media&token=3630c2f4-8041-4b2a-8014-ddaf24e6b31a" target="_blank">Train Ticket</a></li>
+                      <li><a class="dropdown-item" href="https://firebasestorage.googleapis.com/v0/b/manish-attri.appspot.com/o/Old%20Tested%20HTML%2FComments%20by%20Manish.html?alt=media&token=0bee011d-2565-41b4-9082-b3df89173f51" target="_blank">Comments</a></li>
+                      <li><a class="dropdown-item" href="https://firebasestorage.googleapis.com/v0/b/manish-attri.appspot.com/o/Old%20Tested%20HTML%2FInstagram%20Login.html?alt=media&token=78473ab7-ac5f-4fdb-95c1-a5069553f1de" target="_blank">Insta login</a></li>                      
+                      <li><a class="dropdown-item" href="https://firebasestorage.googleapis.com/v0/b/manish-attri.appspot.com/o/Bus%20Pass.html?alt=media&token=2ae6e474-2444-4426-8029-8d325675dad9" target="_blank">DTC Bus Pass</a></li>     
+                      <li><a class="dropdown-item" href="" target="_blank">Contacts</a></li>                                                           
+                    </ul>
+                  </li>
+                  <li class="dropdown"><a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Sources and credits</a>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="https://around.createx.studio/index.html" target="_blank">Main Page</a></li>
+                      <li><a class="dropdown-item" href="https://around.createx.studio/components/typography.html" target="_blank">UI Kit</a></li>
+                      <li><a class="dropdown-item" href="https://getbootstrap.com/" target="_blank">Bootstrap</a></li>
+                    </ul>
+                  </li>                  
+                </ul>
+              </li>
+               <li class="nav-item"><a class="nav-link" data-bs-toggle="modal" data-bs-target="#modalLong" target="_blank" rel="noopener"><i class="ai-cloud-upload fs-xl me-2 ms-n1"></i>Upload</a></li>
+              <li class="nav-item"><a class="nav-link" href="#about" data-scroll><i class="ai-flower fs-xl me-2 ms-n1"></i> About</a></li>
+            </ul>
+            <div class="d-sm-none p-3 mt-n3"><a class="btn btn-primary w-100  mb-1" href="https://firebasestorage.googleapis.com/v0/b/manish-attri.appspot.com/o/Site%2FMy%20chat%20Website.html?alt=media"><i class="ai-download fs-xl me-2 ms-n1"></i>Chat with US</a></div>
+          </nav>
+        </div>
+      </header>
+      <!-- Page content-->
+      <!-- Hero + Features-->
+      <section class="bg-secondary position-relative pt-lg-3 pt-xl-4 pt-xxl-5">
+        <div class="bg-primary position-absolute start-0 bottom-0 w-100 d-none d-xl-block" style="height: 920px;"></div>
+        <div class="bg-primary position-absolute start-0 bottom-0 w-100 d-none d-lg-block d-xl-none" style="height: 830px;"></div>
+        <div class="bg-primary position-absolute start-0 bottom-0 w-100 d-lg-none d-xl-none" style="height: 62%;"></div>
+        <div class="bg-faded-dark rounded-circle position-absolute start-50 d-none d-lg-block" style="bottom: 220px; width: 480px; height: 480px; margin-left: -240px;" data-aos="zoom-in" data-aos-duration="700" data-aos-delay="200" data-aos-offset="300"></div>
+        <div class="container position-relative zindex-5 mt-2 pt-5 pb-2 pb-sm-4 pb-lg-5">
+          <h1 class="display-3 text-center mx-auto pt-5 my-2 my-sm-4" style="max-width: 680px;">The Best Platform For Offline Transfer
+            <svg class="d-inline-block heartbeat text-danger" height="48" viewBox="0 0 52 38" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path d="M52,6.3c0.8-12.6-18.6-4-24.8,1.6c-0.4,0.4-1.1,0.4-1.5,0.1C9.9-2.7-2,1.5,0.3,10c1.5,5.6,16.2,20.4,25.5,27.7c0.4,0.3,1,0.3,1.4,0C36.7,29.5,51.2,19.1,52,6.3z"></path>
+            </svg>
+          </h1>
+          <svg class="d-block mx-auto text-primary" width="511" height="40" viewBox="0 0 511 40" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path d="M385.252 0.160149C313.41 0.614872 292.869 0.910678 253.008 2.06539C211.7 3.26203 182.137 4.46154 135.231 6.84429C124.358 7.39665 112.714 7.92087 99.0649 8.47247C48.9242 10.4987 39.1671 11.0386 22.9579 12.6833C14.9267 13.4984 7.98117 14.0624 4.08839 14.2162C0.627411 14.3527 0 14.4386 0 14.7762C0 15.0745 5.53537 15.3358 8.56298 15.1804C9.64797 15.1248 12.5875 14.9887 15.0956 14.8782C17.6037 14.7676 23.123 14.4706 27.3608 14.2183C37.3399 13.6238 42.1312 13.4363 59.2817 12.9693C88.1133 12.1844 109.893 11.43 136.647 10.2898C146.506 9.86957 159.597 9.31166 165.737 9.04993C212.308 7.06466 269.195 5.29439 303.956 4.74892C346.139 4.08665 477.094 3.50116 474.882 3.98441C474.006 4.17607 459.021 5.6015 450.037 6.34782C441.786 7.03345 428 8.02235 411.041 9.14508C402.997 9.67773 391.959 10.4149 386.51 10.7832C366.042 12.1673 359.3 12.5966 347.67 13.2569C294.096 16.2987 258.708 18.9493 209.451 23.6091C180.174 26.3788 156.177 29.5584 129.396 34.2165C114.171 36.8648 112.687 37.3352 114.186 39.0402C115.161 40.1495 122.843 40.2933 138.338 39.492C166.655 38.0279 193.265 36.8923 219.043 36.048C235.213 35.5184 237.354 35.4296 253.795 34.6075C259.935 34.3005 270.549 33.8517 277.382 33.6105L289.804 33.1719L273.293 32.999C248.274 32.7369 221.435 32.7528 212.596 33.035C183.334 33.9693 167.417 34.6884 141.419 36.2506C135.222 36.623 129.994 36.8956 129.801 36.8566C127.94 36.4786 169.612 30.768 189.492 28.6769C234.369 23.956 280.582 20.4337 351.602 16.3207C358.088 15.9451 371.108 15.1233 380.535 14.4947C389.962 13.866 404.821 12.8761 413.556 12.2946C447.177 10.057 457.194 9.22358 489.506 5.97543C510.201 3.895 510.311 3.8772 510.875 2.50901C511.496 1.00469 509.838 0.322131 505.088 0.127031C500.576 -0.0584957 416.098 -0.0351424 385.252 0.160149ZM291.144 33.02C291.536 33.0658 292.102 33.0641 292.402 33.0162C292.703 32.9683 292.383 32.9308 291.691 32.9329C290.999 32.935 290.753 32.9743 291.144 33.02Z"></path>
+          </svg>
+          <div class="row justify-content-center pt-3 pt-sm-4 pt-md-5 mt-sm-1">
+            <div class="col-8 col-lg-4 order-lg-2" style="margin-top: -105px;">
+              <!-- Middle sticky app screen-->
+              <div class="position-sticky top-0 mb-5 pb-sm-2 pb-xl-4" style="padding-top: 110px;"><img class="d-block mx-auto" src="https://firebasestorage.googleapis.com/v0/b/manish-attri.appspot.com/o/Site%2FSource%20Code%2Fscreen1.png?alt=media&token=d44b393d-c80b-4a15-81be-dfdf6a81afc4" width="322" alt="App screen"></div>
+            </div>
+            <div class="col-sm-6 col-lg-4 order-lg-1 overflow-hidden mt-lg-4 pt-xl-3">
+              <!-- Left app sceen--><img class="d-none d-lg-block rounded-4 ms-auto" src="https://firebasestorage.googleapis.com/v0/b/manish-attri.appspot.com/o/Site%2FSource%20Code%2Fscreen2.png?alt=media&token=a7ada8c5-08d6-42f9-88c9-16e3a56e17e2" width="297" alt="App screen" style="box-shadow: 0 .9375rem 3rem -.5rem rgba(18,34,50, .05);">
+              <div class="d-none d-xxl-block" style="height: 310px;"></div>
+              <div class="d-none d-xl-block d-xxl-none" style="height: 280px;"></div>
+              <div class="d-none d-lg-block d-xl-none" style="height: 200px;"></div>
+              <!-- Left features list-->
+              <div class="mb-5 mx-auto mx-sm-0 pb-lg-2 pb-xl-4" style="max-width: 340px;" data-aos="fade-right" data-aos-offset="300" data-aos-easing="ease-out-back" data-disable-parallax-down="lg">
+                <div class="d-table bg-faded-dark rounded-1 p-2 mb-3 mb-lg-4">
+                  <svg class="d-block m-1 text-warning" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12.0005 7.99608C11.897 7.99608 11.795 7.97508 11.699 7.93308L5.4485 5.18358C5.177 5.06358 5 4.79508 5 4.49658C5 4.19808 5.1755 3.92958 5.4485 3.80958L11.699 1.06007C11.891 0.97607 12.1115 0.97607 12.3035 1.06007L18.554 3.80958C18.8255 3.92958 19.0025 4.19808 19.0025 4.49658C19.0025 4.79508 18.827 5.06358 18.554 5.18358L12.3035 7.93308C12.206 7.97508 12.104 7.99608 12.0005 7.99608Z"></path>
+                    <path d="M12.907 9.3054C12.616 9.4329 12.313 9.4959 12.001 9.4959C11.689 9.4959 11.386 9.43291 11.098 9.30691L7 7.50391V8.19241C7 8.80291 7.3195 9.3759 7.831 9.6879C9.2725 10.5624 10.636 10.9989 11.9995 10.9989C13.363 10.9989 14.7265 10.5609 16.168 9.6879C16.681 9.3759 16.999 8.80291 16.999 8.19241V7.50391L12.907 9.3054Z"></path>
+                    <path d="M22.2495 4.99909H20.949C20.79 5.87959 20.2095 6.62959 19.38 7.00009H22.0005V19.0001H1.9995V7.00009H4.62C3.7905 6.62959 3.21 5.87959 3.0495 5.00059H1.7505C0.7905 4.99909 0 5.78959 0 6.74959V19.2491C0 20.2091 0.7905 20.9996 1.7505 20.9996H10.0005V22.9991H8.001C7.4505 22.9991 7.0005 23.4491 7.0005 23.9996C7.0005 24.5501 7.4505 25.0001 8.001 25.0001H16.0005C16.551 25.0001 17.001 24.5501 17.001 23.9996C17.001 23.4491 16.551 22.9991 16.0005 22.9991H14.001V20.9996H22.251C23.211 20.9996 24.0015 20.2091 24.0015 19.2491V6.74959C24 5.78959 23.2095 4.99909 22.2495 4.99909Z"></path>
+                  </svg>
+                </div>
+                <h2 class="h4 text-white mb-2 mb-lg-3">Access on all devices</h2>
+                <p class="text-white opacity-80 mb-0">Using a web browser, you can browse and download all the files on your Android device without needing any cable.</p>
+              </div>
+              <div class="mb-5 mx-auto mx-sm-0 pb-lg-2 pb-xl-4" style="max-width: 340px;" data-aos="fade-right" data-aos-delay="200" data-aos-offset="250" data-aos-easing="ease-out-back" data-disable-parallax-down="lg">
+                <div class="d-table bg-faded-dark rounded-1 p-2 mb-3 mb-lg-4">
+                  <svg class="d-block m-1 text-warning" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17.4995 10.9995C13.916 10.9995 11 13.9155 11 17.499C11 21.0825 13.9145 24 17.4995 24C21.0845 24 23.999 21.084 23.999 17.5005C23.999 13.917 21.083 10.9995 17.4995 10.9995ZM21.803 15H19.9985V13.1955C20.7485 13.632 21.3665 14.2515 21.803 15ZM22.499 17.5005C22.499 17.8425 22.4645 18.177 22.3985 18.501H20V16.5H22.3985C22.4645 16.824 22.499 17.157 22.499 17.5005ZM12.4985 17.5005C12.4985 17.1585 12.533 16.824 12.599 16.5H14.999V18.4995H12.6005C12.5345 18.177 12.4985 17.8425 12.4985 17.5005ZM16.499 16.5H18.4985V18.4995H16.499V16.5ZM18.4985 12.6015V15H16.499V12.6015C16.8215 12.5355 17.156 12.501 17.4995 12.501C17.843 12.501 18.176 12.5355 18.4985 12.6015ZM14.999 13.1955V15H13.1945C13.631 14.2515 14.2505 13.632 14.999 13.1955ZM13.1945 19.9995H14.999V21.804C14.2505 21.3675 13.631 20.7495 13.1945 19.9995ZM16.499 22.3995V20.001H18.4985V22.3995C18.176 22.4655 17.8415 22.5 17.4995 22.5C17.1575 22.5 16.823 22.4655 16.499 22.3995ZM19.9985 21.804V19.9995H21.803C21.3665 20.7495 20.7485 21.3675 19.9985 21.804Z"></path>
+                    <path d="M16.0005 4.0005H15V1.0005C15 0.45 14.55 0 13.9995 0H3C2.1795 0 1.4205 0.3405 0.8805 0.8805C0.3405 1.4205 0 2.1705 0 3V19.0005C0 20.6505 1.35 22.0005 3 22.0005H10.29C9.4695 20.7 9 19.1505 9 17.5005C9 12.981 12.54 9.27 16.9995 9.0105V5.001C16.9995 4.4505 16.5495 4.0005 16.0005 4.0005ZM13.0005 4.0005H3C2.4495 4.0005 1.9995 3.5505 1.9995 3C1.9995 2.4495 2.4495 1.9995 3 1.9995H13.0005V4.0005Z"></path>
+                  </svg>
+                </div>
+                <h2 class="h4 text-white mb-2 mb-lg-3">Website Streaming</h2>
+                <p class="text-white opacity-80 mb-0">View all the camera pictures, videos and music of your device streamed directly in a web browser.</p>
+              </div>
+            </div>
+            <div class="col-sm-6 col-lg-4 order-lg-3 overflow-hidden mt-lg-4 pt-xl-3">
+              <!-- Right app screen--><img class="d-none d-lg-block rounded-4" src="https://firebasestorage.googleapis.com/v0/b/manish-attri.appspot.com/o/Site%2FSource%20Code%2Fscreen3.png?alt=media&token=9d21585e-ae51-47cf-b03c-6f5034bd757d" width="297" alt="App screen" style="box-shadow: 0 .9375rem 3rem -.5rem rgba(18,34,50, .05);">
+              <div class="d-none d-xxl-block" style="height: 520px;"></div>
+              <div class="d-none d-xl-block d-xxl-none" style="height: 490px;"></div>
+              <div class="d-none d-lg-block d-xl-none" style="height: 400px;"></div>
+              <!-- Right features list-->
+              <div class="mb-5 mx-auto me-sm-0 pb-lg-2 pb-xl-4" style="max-width: 340px;" data-aos="fade-left" data-aos-offset="250" data-aos-delay="400" data-aos-easing="ease-out-back" data-disable-parallax-down="lg">
+                <div class="d-table bg-faded-dark rounded-1 p-2 mb-3 mb-lg-4">
+                  <svg class="d-block m-1 text-warning" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11.9986 0C5.38318 0 0 5.38318 0 11.9986C0 18.6141 5.38041 24 11.9986 24C18.6168 24 23.9972 18.6168 23.9972 12.0014C23.9972 5.38595 18.6141 0 11.9986 0ZM16.7837 17.0052C16.5095 17.3541 16.1025 17.5396 15.6899 17.5396C15.3936 17.5396 15.0945 17.4427 14.8397 17.2489L10.6861 14.0173C10.3482 13.7542 10.1516 13.3499 10.1516 12.9235V6.92281C10.1516 6.15853 10.7719 5.53825 11.5362 5.53825C12.3005 5.53825 12.9207 6.15853 12.9207 6.92281V12.2451L16.54 15.0613C17.1437 15.5292 17.2517 16.4015 16.7837 17.0052Z"></path>
+                  </svg>
+                </div>
+                <h2 class="h4 text-white mb-2 mb-lg-3">Multiple File Upload</h2>
+                <p class="text-white opacity-80 mb-0">Many batch file uploads and downloads to save you time when transferring many files at once</p>
+              </div>
+              <div class="mb-5 mx-auto me-sm-0 pb-lg-2 pb-xl-4" style="max-width: 340px;" data-aos="fade-left" data-aos-offset="200" data-aos-delay="600" data-aos-easing="ease-out-back" data-disable-parallax-down="lg">
+                <div class="d-table bg-faded-dark rounded-1 p-2 mb-3 mb-lg-4">
+                  <svg class="d-block m-1 text-warning" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19.9524 20.9857C17.8306 22.8676 15.057 24 12.0132 24C5.38642 24 0 18.6128 0 11.985C0 5.60651 4.98548 0.379975 11.2624 0V5.02678C7.74852 5.39775 5.005 8.38048 5.005 11.985C5.005 15.8493 8.14795 18.9942 12.0132 18.9942C13.6755 18.9942 15.2072 18.413 16.4085 17.4428L19.9524 20.9857Z"></path>
+                    <path d="M24.0042 12.7358C23.8436 15.4797 22.7534 17.9818 21.0205 19.9253L17.4766 16.3808C18.298 15.3701 18.8386 14.1085 18.9782 12.7358H24.0042Z"></path>
+                    <path d="M23.998 11.234H18.9719C18.6311 7.97046 16.0287 5.36621 12.7656 5.02678V0C18.7917 0.360451 23.6376 5.20701 23.998 11.234Z"></path>
+                  </svg>
+                </div>
+                <h2 class="h4 text-white mb-2 mb-lg-3">SSL Protection</h2>
+                <p class="text-white opacity-80 mb-0">Web password to prevent unwanted access. Special “Development Goodies” mode to enable SSL protection</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Parallax info section-->
+      <section class="overflow-hidden pt-5 mt-lg-3 mt-xl-4 mt-xxl-5">
+        <div class="container pt-3 pt-sm-4 pt-lg-5 mt-md-3 mt-lg-0">
+          <div class="row align-items-center">
+            <div class="col-md-7 col-xxl-6 offset-xl-1 offset-xxl-2 order-md-2 pb-2 pb-sm-0 mb-4 mb-sm-5 mb-md-0">
+              <div class="parallax mx-auto" style="margin-top: 50px;">
+                <div class="parallax-layer position-relative" data-depth="0.2"><img src="https://firebasestorage.googleapis.com/v0/b/manish-attri.appspot.com/o/Site%2FSource%20Code%2FParallax%2Flayer01.svg?alt=media&token=f009605d-66ca-43c1-a5a4-888a24914176" alt="Layer1"/>
+                </div>
+                <div class="parallax-layer" data-depth="0.70"><img src="https://firebasestorage.googleapis.com/v0/b/manish-attri.appspot.com/o/Site%2FSource%20Code%2FParallax%2Flayer02.svg?alt=media&token=68feebec-7af8-46d2-b111-7b042a327168" alt="Layer2"/>
+                </div>
+                <div class="parallax-layer" data-depth="0.40"><img src="https://firebasestorage.googleapis.com/v0/b/manish-attri.appspot.com/o/Site%2FSource%20Code%2FParallax%2Flayer03.svg?alt=media&token=10b0c12f-d116-4187-a95d-5e5f1c709c17" alt="Layer3"/>
+                </div>
+                <div class="parallax-layer" data-depth="1.00"><img src="https://firebasestorage.googleapis.com/v0/b/manish-attri.appspot.com/o/Site%2FSource%20Code%2FParallax%2Flayer04.svg?alt=media&token=a987571a-92c5-4f41-a2b6-31e6b710b3c9" alt="Layer4"/>
+                </div>
+                <div class="parallax-layer" data-depth="1.2"><img src="https://firebasestorage.googleapis.com/v0/b/manish-attri.appspot.com/o/Site%2FSource%20Code%2FParallax%2Flayer05.svg?alt=media&token=af64f2d8-8dd7-4da1-b2af-f4ac2131ada2" alt="Layer5"/>
+                </div>
+                <div class="parallax-layer" data-depth="0.8"><img src="https://firebasestorage.googleapis.com/v0/b/manish-attri.appspot.com/o/Site%2FSource%20Code%2FParallax%2Flayer06.svg?alt=media&token=4ab49684-f85b-42d7-80fc-3926945cd27c" alt="Layer6"/>
+                </div>
+                <div class="parallax-layer" data-depth="0.5"><img src="https://firebasestorage.googleapis.com/v0/b/manish-attri.appspot.com/o/Site%2FSource%20Code%2FParallax%2Flayer07.svg?alt=media&token=f3503289-fc0f-4480-85c0-cf200196e5b4" alt="Layer7"/>
+                </div>
+                <div class="parallax-layer" data-depth="0.7"><img src="https://firebasestorage.googleapis.com/v0/b/manish-attri.appspot.com/o/Site%2FSource%20Code%2FParallax%2Flayer08.svg?alt=media&token=c7a7eb76-f739-4272-b680-29acd9581258" alt="Layer8"/>
+                </div>
+                <div class="parallax-layer" data-depth="1.2"><img src="https://firebasestorage.googleapis.com/v0/b/manish-attri.appspot.com/o/Site%2FSource%20Code%2FParallax%2Flayer09.svg?alt=media&token=c8137a02-99b0-462a-a8a5-39ebbe02a57d" alt="Layer9"/>
+                </div>
+                <div class="parallax-layer" data-depth="0.9"><img src="https://firebasestorage.googleapis.com/v0/b/manish-attri.appspot.com/o/Site%2FSource%20Code%2FParallax%2Flayer10.svg?alt=media&token=e9a3420b-57de-4cc6-9d19-b9cef4b72075" alt="Layer10"/>
+                </div>
+                <div class="parallax-layer" data-depth="1.4"><img src="https://firebasestorage.googleapis.com/v0/b/manish-attri.appspot.com/o/Site%2FSource%20Code%2FParallax%2Flayer11.svg?alt=media&token=097086a0-c5ec-4a94-8d12-01963cb458e1" alt="Layer11"/>
+                </div>
+                <div class="parallax-layer" data-depth="0.6"><img src="https://firebasestorage.googleapis.com/v0/b/manish-attri.appspot.com/o/Site%2FSource%20Code%2FParallax%2Flayer12.svg?alt=media&token=2b38a826-4340-47f5-a460-cabec88bb0d1" alt="Layer12"/>
+                </div>
+                <div class="parallax-layer" data-depth="0.30"><img src="https://firebasestorage.googleapis.com/v0/b/manish-attri.appspot.com/o/Site%2FSource%20Code%2FParallax%2Flayer13.png?alt=media&token=28765e1b-b08f-4fd7-8ee8-9e4704930dc8" alt="Layer13"/>
+                </div>
+                <div class="parallax-layer" data-depth="1.8"><img src="https://firebasestorage.googleapis.com/v0/b/manish-attri.appspot.com/o/Site%2FSource%20Code%2FParallax%2Flayer14.svg?alt=media&token=74379b1a-539c-4eb5-869a-a4e2c26c6d26" alt="Layer14"/>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-5 col-xl-4 order-md-1" data-aos="fade-up" data-aos-duration="600" data-aos-offset="150">
+              <h2 class="h1 text-center text-md-start mb-4">Offline Sharing has already been chosen by many people</h2>
+              <ul class="d-table ps-4 pb-2 pb-sm-0 mx-auto mx-md-0 mb-4 mb-sm-5">
+                <li class="mb-2">Simple to use with no set up or buttons</li>
+                <li class="mb-2">Web password to prevent unwanted access.</li>
+                <li>Ability to configure the port settings</li>
+              </ul>
+              <div class="d-flex justify-content-center justify-content-md-start">
+                <div class="me-4"><img class="d-dark-mode-none" src="https://around.createx.studio/assets/img/landing/mobile-app-showcase/awards/01-dark.png" width="188" alt="Award"><img class="d-none d-dark-mode-block" src="https://around.createx.studio/assets/img/landing/mobile-app-showcase/awards/01-light.png" width="188" alt="Award"></div>
+                <div><img class="d-dark-mode-none" src="https://around.createx.studio/assets/img/landing/mobile-app-showcase/awards/02-dark.png" width="188" alt="Award"><img class="d-none d-dark-mode-block" src="https://around.createx.studio/assets/img/landing/mobile-app-showcase/awards/02-light.png" width="188" alt="Award"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Testimonials carousel-->
+      <section class="container py-5 mb-1 mb-sm-2 my-lg-3 my-xl-4 my-xxl-5" data-aos="fade-up" data-aos-duration="600" data-aos-offset="150">
+        <div class="row justify-content-center pt-2 pt-sm-4 pb-4 mb-2 mb-lg-3">
+          <div class="col-lg-8 col-xl-7 col-xxl-6 text-center pt-2">
+            <h2 class="h1 mb-1"><svg class="text-warning" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 0L12.6798 4.12733C13.2879 7.81883 16.1812 10.7121 19.8727 11.3202L24 12L19.8727 12.6798C16.1812 13.2879 13.2879 16.1812 12.6798 19.8727L12 24L11.3202 19.8727C10.7121 16.1812 7.81882 13.2879 4.12733 12.6798L0 12L4.12733 11.3202C7.81883 10.7121 10.7121 7.81882 11.3202 4.12733L12 0Z"></path>
+              </svg> Users who recommend WebShare</h2>
+          </div>
+        </div>
+        <div class="swiper pb-2 pb-sm-4" data-swiper-options="{
+        &quot;slidesPerView&quot;: 1,
+        &quot;spaceBetween&quot;: 24,
+        &quot;loop&quot;: true,
+        &quot;pagination&quot;: {
+          &quot;el&quot;: &quot;.swiper-pagination&quot;,
+          &quot;clickable&quot;: true
+        },
+        &quot;breakpoints&quot;: {
+          &quot;800&quot;: {
+            &quot;slidesPerView&quot;: 2
+          }
         }
+       }">
+          <div class="swiper-wrapper pt-5">
+            <!-- Item-->
+            <div class="swiper-slide h-auto">
+              <div class="card border-0 bg-faded-info text-center">
+                <div class="polygon-avatar bg-info mx-auto translate-middle-y"><img src="https://around.createx.studio/assets/img/landing/mobile-app-showcase/testimonials/01.png" alt="Nick Williams"></div>
+                <div class="card-body pt-0 mt-n4">
+                  <p class="card-text fs-xl">This is great when you can't get something simple like your computer to recognize your phone or tablet via USB! The create file button "statistics and actions" don't make it easy to find when you are looking at the other action above the file.</p>
+                </div>
+                <div class="card-footer border-0 pt-0">
+                  <div class="h4 mb-1">Manish Chaudhary</div><span>Creator</span>
+                </div>
+              </div>
+            </div>
+            <!-- Item-->
+            <div class="swiper-slide h-auto">
+              <div class="card border-0 bg-faded-warning text-center">
+                <div class="polygon-avatar bg-warning mx-auto translate-middle-y"><img src="https://around.createx.studio/assets/img/landing/mobile-app-showcase/testimonials/02.png" alt="Lili Bocouse"></div>
+                <div class="card-body pt-0 mt-n4">
+                  <p class="card-text fs-xl">OMG, this app is a lifesaver, ignore every review that says they are having problems with this app, coz it's either their network issue or mobile issue because this works perfectly fine here and I have tested it with a 14gb zip file.</p>
+                </div>
+                <div class="card-footer border-0 pt-0">
+                  <div class="h4 mb-1">Payal Chaudhary</div><span>Friend</span>
+                </div>
+              </div>
+            </div>
+            <!-- Item-->
+            <div class="swiper-slide h-auto">
+              <div class="card border-0 bg-faded-primary text-center">
+                <div class="polygon-avatar bg-primary mx-auto translate-middle-y"><img src="https://around.createx.studio/assets/img/landing/mobile-app-showcase/testimonials/04.png" alt="Esther Howard"></div>
+                <div class="card-body pt-0 mt-n4">
+                  <p class="card-text fs-xl">The best app I ever found to transfer data from mobile to pc without any inconvenience.. works even on phones hotspot even if internet access is denied.. a very efficient and easy way to transfer data wirelessly.</p>
+                </div>
+                <div class="card-footer border-0 pt-0">
+                  <div class="h4 mb-1">Aditya Yadav</div><span>Friend</span>
+                </div>
+              </div>
+            </div>
+            <!-- Item-->
+            <div class="swiper-slide h-auto">
+              <div class="card border-0 bg-faded-danger text-center">
+                <div class="polygon-avatar bg-danger mx-auto translate-middle-y"><img src="https://around.createx.studio/assets/img/landing/mobile-app-showcase/testimonials/03.png" alt="Jane Cooper"></div>
+                <div class="card-body pt-0 mt-n4">
+                  <p class="card-text fs-xl">The interface needs a lot of work. It connects fine and works fairly well if you are copying to your phone from a PC. However, copying from your phone to a PC is a nightmare.</p>
+                </div>
+                <div class="card-footer border-0 pt-0">
+                  <div class="h4 mb-1">Priya Jain</div><span>User</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Pagination (bullets)-->
+          <div class="swiper-pagination position-relative bottom-0 mt-2 mt-lg-3 pt-4"></div>
+        </div>
+      </section>
+
+      <!-- FAQ (Accordion)-->
+      <section class="bg-secondary py-5" data-aos="fade-up" data-aos-duration="600" data-aos-offset="150">
+        <div class="container py-md-2 py-lg-3 py-xl-5 my-2 my-sm-3 my-md-4 my-xxl-5">
+          <div class="row">
+            <div class="col-md-4 text-center text-md-start">
+              <h2 class="h1">              
+              <svg class="text-warning" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 0L12.6798 4.12733C13.2879 7.81883 16.1812 10.7121 19.8727 11.3202L24 12L19.8727 12.6798C16.1812 13.2879 13.2879 16.1812 12.6798 19.8727L12 24L11.3202 19.8727C10.7121 16.1812 7.81882 13.2879 4.12733 12.6798L0 12L4.12733 11.3202C7.81883 10.7121 10.7121 7.81882 11.3202 4.12733L12 0Z"></path>
+              </svg> Any questions? Check out the FAQ</h2>
+              <p class="pb-3 pb-sm-4">Some common queries about this application before emailing us ...</p>
+              <div class="d-none d-md-flex justify-content-center">
+                <svg class="text-warning ms-n4" width="200" height="211" viewBox="0 0 200 211" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M198.804 194.488C189.279 189.596 179.529 185.52 169.407 182.07L169.384 182.049C169.227 181.994 169.07 181.939 168.912 181.884C166.669 181.139 165.906 184.546 167.669 185.615C174.053 189.473 182.761 191.837 189.146 195.695C156.603 195.912 119.781 196.591 91.266 179.049C62.5221 161.368 48.1094 130.695 56.934 98.891C84.5539 98.7247 112.556 84.0176 129.508 62.667C136.396 53.9724 146.193 35.1448 129.773 30.2717C114.292 25.6624 93.7109 41.8875 83.1971 51.3147C70.1109 63.039 59.63 78.433 54.2039 95.0087C52.1221 94.9842 50.0776 94.8683 48.0703 94.6608C30.1803 92.8027 11.2197 83.6338 5.44902 65.1074C-1.88449 41.5699 14.4994 19.0183 27.9202 1.56641C28.6411 0.625793 27.2862 -0.561638 26.5419 0.358501C13.4588 16.4098 -0.221091 34.5242 0.896608 56.5659C1.8218 74.6941 14.221 87.9401 30.4121 94.2058C37.7076 97.0203 45.3454 98.5003 53.0334 98.8449C47.8679 117.532 49.2961 137.487 60.7729 155.283C87.7615 197.081 139.616 201.147 184.786 201.155L174.332 206.827C172.119 208.033 174.345 211.287 176.537 210.105C182.06 207.125 187.582 204.122 193.084 201.144C193.346 201.147 195.161 199.887 195.423 199.868C197.08 198.548 193.084 201.144 195.528 199.81C196.688 199.192 197.846 198.552 199.006 197.935C200.397 197.167 200.007 195.087 198.804 194.488ZM60.8213 88.0427C67.6894 72.648 78.8538 59.1566 92.1207 49.0388C98.8475 43.9065 106.334 39.2953 114.188 36.1439C117.295 34.8947 120.798 33.6609 124.168 33.635C134.365 33.5511 136.354 42.9911 132.638 51.031C120.47 77.4222 86.8639 93.9837 58.0983 94.9666C58.8971 92.6666 59.783 90.3603 60.8213 88.0427Z" fill="currentColor"></path>
+                </svg>
+              </div>
+            </div>
+            <div class="col-md-8 col-lg-7 offset-lg-1">
+              <div class="accordion" id="faq">
+                <div class="accordion-item bg-light">
+                  <h3 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#questionOne" aria-expanded="true" aria-controls="questionOne">Is there a free trial?</button>
+                  </h3>
+                  <div class="accordion-collapse collapse show" id="questionOne" aria-labelledby="headingOne" data-bs-parent="#faq">
+                    <div class="accordion-body fs-sm">Yes, You can access all the future of this app so you can say this is a trial version but as of now, it's Totally free of cost. This PRO version is unlimited life Spam</div>
+                  </div>
+                </div>
+                <div class="accordion-item bg-light">
+                  <h3 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#questionTwo" aria-expanded="false" aria-controls="questionTwo">SD Card Write Access Returns to WebShare?</button>
+                  </h3>
+                  <div class="accordion-collapse collapse" id="questionTwo" aria-labelledby="headingTwo" data-bs-parent="#faq">
+                    <div class="accordion-body fs-sm"> Go to Settings in the WebShare app and click the new SD Card Permissions option. It will show a popup that briefly explains what you need to do: "Select the SD card (the top-level, not a subfolder) from the following file chooser dialogue to allow write operations, e.g. upload, delete, rename, etc.". You are essentially choosing an area of storage that you say this app can have permission to read & write</div>
+                  </div>
+                </div>
+                <div class="accordion-item bg-light">
+                  <h3 class="accordion-header" id="headingThree">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#questionThree" aria-expanded="false" aria-controls="questionThree">Managing Your Media With WebShare?</button>
+                  </h3>
+                  <div class="accordion-collapse collapse" id="questionThree" aria-labelledby="headingThree" data-bs-parent="#faq">
+                    <div class="accordion-body fs-sm">Most of the time when people are using WebShare to transfer and manage files, it is often related to media-type files; MP3s, pictures, movies, etc.  This means it is quite important to understand just how Android manages those files so that they appear in the applications that use them, like the Gallery and Music applications.</div>
+                  </div>
+                </div>
+                <div class="accordion-item bg-light">
+                  <h3 class="accordion-header" id="headingFour">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#questionFour" aria-expanded="false" aria-controls="questionFour">Moving Files/Directories in WebShare?</button>
+                  </h3>
+                  <div class="accordion-collapse collapse" id="questionFour" aria-labelledby="headingFour" data-bs-parent="#faq">
+                    <div class="accordion-body fs-sm">Well, that has now changed with the latest update to the application.  Now when you click the 'Create Copy' action next to a file (or a directory now as well) you will be given a popup dialog with contains the path to wear you want to create that copy.  By default, it gives the current directory, but you can specify any directory you like that you have permission to write to, or you can create a new directory by typing it into the dialogue, again as long as you have permission to create it in that location.  Then when you hit 'OK' it will copy the file/directory you have chosen, paste it in the location you specified and then reload the page into that pasted location ... hey presto - copy & paste!</div>
+                  </div>
+                </div>
+                <div class="accordion-item bg-light">
+                  <h3 class="accordion-header" id="headingFive">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#questionFive" aria-expanded="false" aria-controls="questionFive">Do you have monthly and yearly billing options?</button>
+                  </h3>
+                  <div class="accordion-collapse collapse" id="questionFive" aria-labelledby="headingFive" data-bs-parent="#faq">
+                    <div class="accordion-body fs-sm">This version is Totally free of cost. That PRO version comes with unlimited transfer speed.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- CTA-->
+      <section class="bg-secondary" data-aos="zoom-in" data-aos-duration="600" data-aos-offset="150">
+        <div class="container">
+          <div class="position-relative overflow-hidden rounded-5 px-4 px-sm-5 px-lg-0">
+            <div class="bg-primary rounded-5 position-absolute top-0 start-0 w-100 h-100" data-aos="zoom-in" data-aos-duration="600" data-aos-offset="300" data-disable-parallax-down="lg"><img class="position-absolute top-50 start-0 translate-middle-y d-none d-md-block" src="https://around.createx.studio/assets/img/landing/yoga-studio/cta/bg.svg" width="186" alt="Background flower"></div>
+            <div class="row align-items-center position-relative zindex-2">
+              <div class="col-md-6 col-lg-5 col-xl-4 offset-lg-1 pb-sm-3 pt-5 py-md-0 py-lg-5" data-aos="fade-up" data-aos-duration="500" data-aos-offset="250" data-disable-parallax-down="lg">
+                <h2 class="display-3 text-white text-center text-md-start mb-4 mb-lg-5">Ready to <br class='d-none d-xxl-inline'>Get Started?</h2>
+                <div class="d-flex flex-column flex-sm-row justify-content-center justify-content-md-start">
+                  <a class="btn btn-light btn-lg px-3 py-2 me-sm-3 mb-3 mb-sm-0" href="https://firebasestorage.googleapis.com/v0/b/manish-attri.appspot.com/o/Site%2FItems%2FWebShare%201.13.3.apk?alt=media&token=e04d6882-1237-4739-896c-2c700529e1bf"><img class="mx-1" src="https://around.createx.studio/assets/img/market/googleplay-dark.svg" width="136" alt="App Store"></a>
+                  </div>
+              </div>
+              <div class="col-md-6 col-lg-5 offset-xl-1">
+                <!-- Image visible on screens > 768px-->
+                <div class="d-none d-md-block position-relative mx-auto" style="max-width: 484px;">
+                  <div class="position-absolute top-0 start-0 w-100 h-100" data-aos="zoom-in" data-aos-duration="400" data-aos-delay="600" data-aos-offset="300" data-aos-easing="ease-out-back" data-disable-parallax-down="lg">
+                    <svg class="text-warning position-absolute top-0 start-0 w-100 h-100" width="484" height="590" viewBox="0 0 484 590" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M35.0852 77.896C29.0293 78.1976 23.6248 79.9148 17.8537 81.4616C16.7267 81.7638 16.0606 82.9197 16.3605 84.0437C16.6606 85.1684 17.8209 85.8347 18.9481 85.5331C24.4203 84.0662 29.5448 82.3932 35.2968 82.1056C36.4603 82.0476 37.3589 81.0561 37.2973 79.8952C37.2427 78.7329 36.2485 77.8374 35.0852 77.896Z"></path>
+                      <path d="M42.4929 62.8378C31.073 56.0023 17.3524 50.4482 4.32343 47.5959C3.18562 47.3476 2.05922 48.0685 1.81258 49.2044C1.56593 50.3402 2.28436 51.4658 3.42217 51.7141C16.0197 54.4726 29.2896 59.844 40.327 66.4552C41.3271 67.052 42.6231 66.7263 43.2192 65.7286C43.8152 64.7309 43.493 63.4346 42.4929 62.8378Z"></path>
+                      <path d="M51.1742 57.6399C50.0172 48.6073 44.9377 40.4608 39.1682 33.66C38.4115 32.7739 37.0807 32.6648 36.1979 33.4154C35.3087 34.1687 35.2011 35.4998 35.9511 36.3879C41.2085 42.5807 45.9377 49.949 46.9927 58.1754C47.1402 59.3297 48.1987 60.1459 49.3501 59.9984C50.5016 59.8517 51.3216 58.7935 51.1742 57.6399Z"></path>
+                    </svg>
+                  </div><img src="https://firebasestorage.googleapis.com/v0/b/manish-attri.appspot.com/o/Site%2FSource%20Code%2Fcta-screens.png?alt=media&token=720aed44-bd0a-4932-9b31-1b06fac4cc5b" alt="App screens" data-aos="fade-left" data-aos-duration="600" data-aos-delay="200" data-aos-offset="300" data-disable-parallax-down="lg">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- Footer-->
+    <footer id="about" class="footer bg-secondary py-5">
+
+      <div class="container pt-md-2 pt-lg-3 pt-xl-4">
+        <div class="row pb-5 pt-sm-2 mb-lg-2">
+          <div class="col-md-12 col-lg-3 pb-2 pb-lg-0 mb-4 mb-lg-0"><a class="navbar-brand py-0 mb-3 mb-lg-4" href="index.html"><span class="text-primary flex-shrink-0 me-2">
+            <img src="https://firebasestorage.googleapis.com/v0/b/manish-attri.appspot.com/o/Site%2FSource%20Code%2FMain%20Website%20Logo.svg?alt=media&token=d0218408-1e04-4993-afef-2700c330f056" width="35" alt="WebShare"></span><span class="text-nav">WebShare</span></a>
+            <p class="fs-sm pb-2 pb-lg-3 mb-3">The file and directories can be explored in a Web Browser.</p>
+            <div class="d-flex">
+              <a class="btn btn-icon btn-sm btn-secondary btn-telegram rounded-circle me-3" href="https://telegram.me/ManishAttry" target="_blank"><i class="ai-telegram"></i></a>
+              <a class="btn btn-icon btn-sm btn-secondary btn-dribbble rounded-circle me-3" href="https://instagram.com/manishchaudhary.in" target="_blank"><i class="ai-instagram"></i></a>
+              <a class="btn btn-icon btn-sm btn-secondary btn-behance rounded-circle" href="https://g.page/Shiv-Footwear" target="_blank"><i class="ai-google"></i></a></div>
+          </div>
+
+          <div class="col-sm-3 col-lg-2 offset-xl-1 mb-4 mb-sm-0">
+            <h3 class="h5 mb-4">Contact Us</h3>
+            <ul class="list-unstyled mb-0">
+              <li class="d-flex mb-3"><i class="ai-phone lead text-primary me-2"></i><a class="nav-link fw-normal p-0 mt-n1" href="tel:+919999110668">9999 110 668</a></li>
+              <li class="d-flex mb-3"><i class="ai-mail lead text-primary me-2"></i><a class="nav-link fw-normal p-0 mt-n1" href="mailto:manishattri@yahoo.com">ManishAttri@yahoo.com</a></li>
+              <li class="d-flex mb-3"><i class="ai-map-pin lead text-primary me-2"></i><a class="nav-link fw-normal p-0 mt-n1" href="https://www.google.com/maps/place/Khazoori+Khas" target="_blank">F81 Khajori Khas, Delhi-110094</a></li>
+            </ul>
+          </div>
+
+          <div class="col-sm-4 col-lg-2 mb-4 mb-sm-0"></div>
+                    
+          <!-- Subscription CTA-->
+          <div class="col-sm-5 col-lg-4 col-xl-3 offset-lg-1">
+            <h3 class="h6 mb-2">Always stay up to date</h3>
+            <p class="fs-sm">Be the first to hear the latest news and updates!</p>
+            <form class="subscription-form validate" action="https://studio.us12.list-manage.com/subscribe/post?u=c7103e2c981361a6639545bd5&amp;amp;id=29ca296126" method="post" name="mc-embedded-subscribe-form" target="_blank" novalidate style="max-width: 500px;">                        
+              <div class="input-group input-group-sm"><span class="input-group-text"><i class="ai-mail"></i></span>
+                <input class="form-control" type="email" name="EMAIL" placeholder="Enter your email" required id="subscr-email">
+                <button class="btn btn-primary" type="submit" name="subscribe">Subscribe</button>
+              </div>
+              <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+              <div style="position: absolute; left: -5000px;" aria-hidden="true">
+                <input class="subscription-form-antispam" type="text" name="b_c7103e2c981361a6639545bd5_29ca296126" tabindex="-1">
+              </div>
+              <div class="subscription-status mx-auto"></div>
+            </form>
+          </div>
+        </div>
+        <p class="fs-sm mb-0"><span class="opacity-70">© All rights reserved. Made by ❤️ </span><a class="nav-link d-inline fw-normal p-0" href="#about" rel="noopener"> Manish Chaudhary</a></p>
+      </div>
+    </footer>
+    <!-- Back to top button-->
+    <a class="btn-scroll-top" href="#top" data-scroll><svg viewBox="0 0 40 40" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="19" fill="none" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"></circle></svg><i class="ai-arrow-up"></i></a>
+    <!-- Vendor scripts: js libraries and plugins-->
+    <script src="https://around.createx.studio/assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://around.createx.studio/assets/vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js"></script>
+    <script src="https://around.createx.studio/assets/vendor/parallax-js/dist/parallax.min.js"></script>
+    <script src="https://around.createx.studio/assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="https://around.createx.studio/assets/vendor/aos/dist/aos.js"></script>
+    <!-- Google Firebaser-->
+<script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-storage.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>           
+            <script>
+            // Your web app's Firebase configuration
+            var firebaseConfig = {
+                  apiKey: "AIzaSyDgYg6yuTnE7D9rgd8ofFOB5iJyKp3CGFE",
+                  authDomain: "manish-attri.firebaseapp.com",
+                  databaseURL: "https://manish-attri-default-rtdb.firebaseio.com",
+                  storageBucket: "manish-attri.appspot.com",
+                  messagingSenderId: "288059507254"
+            };
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+            
+            <!-- Tab Second (Clipboard)-->    
+            
+            var UserRef = firebase.database().ref().child('Site/Try/Main');
+                            UserRef.on('value',function (snap){someUser.innerHTML = `<a href="${snap.val()}">${snap.val()}</a>`;});
+  
+  
+            function changeData1(userId){var someName = document.getElementById("input1").value
+               firebase.database().ref('Site/Try/').set({
+                Main: someName,     });   };                      
+                      
+            </script>
+            <script>
+            var files = [];
+            document.getElementById("files").addEventListener("change", function(e) {
+              files = e.target.files;
+              for (let i = 0; i < files.length; i++) {
+                console.log(files[i]);
+              }
+            });
+            
+            document.getElementById("send").addEventListener("click", function() {
+              //checks if files are selected
+              if (files.length != 0) {
+                //Loops through all the selected files
+                for (let i = 0; i < files.length; i++) {
+                
+                      //   Caption name
+                const captionText = document.getElementById('caption').value;
+                console.log('caption:', captionText);             
+                
+                  //create a storage reference
+                  var storage = firebase.storage().ref('All Upload Files/'+captionText+"/"+files[i].name);
+            
+                  //upload file
+                  var upload = storage.put(files[i]);
+            
+                  //update progress bar
+                  upload.on("state_changed", function(snapshot) {
+                   var percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                   document.getElementById("progress-bar").style.width = percentage + "%";
+                   document.getElementById("progress-bar").setAttribute("aria-valuenow", percentage);
+                   document.getElementById("progress-bar").innerText = Math.round(percentage) + "%";
+                    },
+            
+                    function error() {
+                      alert("error uploading file");
+                    },
+            
+                    function complete() {
+                      document.getElementById(
+                        "uploading"
+                      ).innerHTML += `<div class="alert d-flex alert-success alert-dismissible fade show" role="alert"><i class="bx ai-circle-check lead me-3"></i><div>${files[i].name} <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button></div></div>`;
+                    }
+                  );
+                }
+              } else {
+                alert("No File Chosen");
+              }
+            });
+            
+            function getFileUrl(filename) {
+              //create a storage reference
+              var storage = firebase.storage().ref('All Files/'+filename);
+            
+              //get file url
+              storage
+                .getDownloadURL()
+                .then(function(url) {
+                  console.log(url);
+                })
+                .catch(function(error) {
+                  console.log("error encountered");
+                });
+            }
+            </script>
+
+    <!-- Main theme script-->        
+            <script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const themeSwitch = document.getElementById('theme-mode');
+    const root = document.documentElement;
+    // Set initial switch and theme based on localStorage
+    let storedMode = localStorage.getItem('mode');
+    if (storedMode === 'dark') {
+      root.setAttribute('data-bs-theme', 'dark');
+      themeSwitch.checked = true;
+    } else {
+      root.setAttribute('data-bs-theme', 'light');
+      themeSwitch.checked = false;
     }
+    // Listen for changes on theme switch
+    themeSwitch.addEventListener('change', function() {
+      if (this.checked) {
+        root.setAttribute('data-bs-theme', 'dark');
+        localStorage.setItem('mode', 'dark');
+      } else {
+        root.setAttribute('data-bs-theme', 'light');
+        localStorage.setItem('mode', 'light');
+      }
+    });
+  });
+</script>
     
-    // Run countdown function
-    countdown();
-    
-</script>
-
-  
-  <!-- FOR Button use onclick="myFunction()"  -->
-<script>
-function myFunction() {
-  window.location = window.location.search.slice(1).replace(/&m=1/g,"").replace(/m=1/g,"");
-                        }
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="comments">
-
-    <!-- Title, with comment count -->
-    <h2><span id="comments-count"></span> Comments</h2>
-
-    <!-- Display comments here -->
-    <ul id="comments-list"></ul>
-  
-    <!-- Reference to return comment form after this span, when the reply form is cancelled -->
-    <span id="comment-container"></span>
-
-    <!-- Comment form -->
-    <form id="comment" style="display:block;">
-      <h3 id="comment-form-title">Leave a comment</h3>
-      <textarea id="message" type="text" placeholder="Comment (HTML supported)" required></textarea>
-      <input id="name" type="text" placeholder="Name" required>
-      <input id="email" type="email" placeholder="Email" required>
-      <button class="btn" type="submit" name="action">Post Comment</button>
-    </form>
-
-    <!-- Reply form -->
-    <form id="reply" style="display:none;">
-      <h3 id="reply-form-title"></h3>
-      <div id="cancel-reply"><a href="#!" class="cancel-reply-link">Cancel Reply</a></div>
-      <textarea id="message" type="text" placeholder="Comment (HTML supported)" required></textarea>
-      <input id="name" type="text" placeholder="Name" required>
-      <input id="email" type="email" placeholder="Email" required>
-      <button class="btn" type="submit" name="action">Post Comment</button>
-    </form>
-
-</div>
-
-<script src="js/md5.js"></script>
-<script src="js/timeago.js"></script>
-<script src="js/xss-filters.js"></script>
-<!-- Paste your Firebase code here !>
-<!-- The core Firebase JS SDK is always required and must be listed first -->
-<script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
-
-<!-- TODO: Add SDKs for Firebase products that you want to use
-     https://firebase.google.com/docs/web/setup#available-libraries -->
-<script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-analytics.js"></script>
-
-<script>
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  var firebaseConfig = {
-    apiKey: "AIzaSyDgYg6yuTnE7D9rgd8ofFOB5iJyKp3CGFE",
-    authDomain: "manish-attri.firebaseapp.com",
-    databaseURL: "https://manish-attri-default-rtdb.firebaseio.com",
-    projectId: "manish-attri",
-    storageBucket: "manish-attri.appspot.com",
-    messagingSenderId: "288059507254",
-    appId: "1:288059507254:web:299656bca4701fb4388e97",
-    measurementId: "G-P9X9XJJEHG"
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  firebase.analytics();
-</script>
-<script src="fire-comments.min.js"></script>
-
-
-
-
-
-
-
-
-    </body>
- </html>
+    <!-- Main theme script-->
+    <script src="https://around.createx.studio/assets/js/theme.min.js"></script>
+  </body>
+</html>
