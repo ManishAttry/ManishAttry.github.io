@@ -3,10 +3,7 @@
 **Website:** https://manishattry.github.io/
 
 ## About
-This repository hosts my personal website, built to showcase my projects and experience during the hiring process.
-
-## Tech
-- HTML
+This repository hosts my personal website, built to showcase my projects and experience.
 
 ## View / Run Locally
 - Live site: https://manishattry.github.io/
