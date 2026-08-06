@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Credit Risk PD Model | Manish Kumar</title>
+  <meta name="description" content="End-to-end credit risk probability of default model with IFRS9 staging and ECL estimation." />
+
+  <!-- Around Theme CSS (only external CSS) -->
+  <link rel="stylesheet" href="https://around.createx.studio/assets/css/theme.min.css" />
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <style>
+    /* ── Page-level overrides using Around CSS vars only ─────── */
+    html, body { scroll-behavior: smooth; }
+
+    /* Hero section */
+    .cr-hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 100px 0 60px;
+      position: relative;
+      overflow: hidden;
+      background: var(--ar-body-bg);
+    }
+    .cr-grid-bg {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(68,140,116,.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(68,140,116,.05) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+    .cr-orb {
+      position: absolute; border-radius: 50%;
+      filter: blur(90px); pointer-events: none;
+    }
+    .cr-orb-1 {
+      width: 480px; height: 480px; top: -80px; left: -80px;
+      background: radial-gradient(circle, rgba(68,140,116,.18), transparent 70%);
+    }
+    .cr-orb-2 {
+      width: 360px; height: 360px; bottom: 0; right: -60px;
+      background: radial-gradient(circle, rgba(63,127,202,.12), transparent 70%);
+    }
+
+    /* Gradient text using Around primary */
+    .cr-gradient-text {
+      background: linear-gradient(90deg, var(--ar-primary), #3f7fca);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Hero badge */
+    .cr-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 16px; border-radius: 50rem;
+      background: rgba(68,140,116,.12);
+      border: 1px solid rgba(68,140,116,.25);
+      color: var(--ar-primary); font-size: .8rem; font-weight: 500;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Stat row */
+    .cr-stat-row { display: flex; align-items: center; gap: 1.5rem; margin-top: 2rem; }
+    .cr-stat-val { font-size: 1.75rem; font-weight: 700; color: var(--ar-heading-color); font-family: var(--ar-font-monospace); }
+    .cr-stat-lbl { font-size: .7rem; text-transform: uppercase; letter-spacing: .07em; color: var(--ar-secondary-color); margin-top: 2px; }
+    .cr-divider { width: 1px; height: 40px; background: var(--ar-border-color); }
+
+    /* Dashboard mockup card */
+    .cr-mockup {
+      background: var(--ar-secondary-bg); border: 1px solid var(--ar-border-color);
+      border-radius: var(--ar-border-radius-xxl); padding: 1.25rem;
+      max-width: 440px; margin: 0 auto;
+    }
+    .cr-mockup-dots { display: flex; gap: 6px; margin-bottom: 1rem; }
+    .cr-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .cr-mockup-kpi { display: flex; justify-content: space-around; margin-bottom: 1rem; }
+    .cr-mkpi-v { font-size: 1.1rem; font-weight: 700; color: var(--ar-heading-color); font-family: var(--ar-font-monospace); }
+    .cr-mkpi-l { font-size: .65rem; color: var(--ar-secondary-color); text-transform: uppercase; letter-spacing: .05em; }
+
+    .cr-stage-row { display: flex; gap: 6px; margin-top: .75rem; }
+    .cr-stage {
+      flex: 1; border-radius: var(--ar-border-radius-sm);
+      padding: 6px 4px; text-align: center;
+      font-size: .7rem; font-weight: 600;
+    }
+    .cr-stage-1 { background: rgba(63,202,144,.12); color: var(--ar-success); border: 1px solid rgba(63,202,144,.2); }
+    .cr-stage-2 { background: rgba(237,203,80,.12); color: var(--ar-warning); border: 1px solid rgba(237,203,80,.2); }
+    .cr-stage-3 { background: rgba(237,80,80,.12); color: var(--ar-danger); border: 1px solid rgba(237,80,80,.2); }
+    .cr-stage small { display: block; font-weight: 400; opacity: .8; }
+
+    /* Floating cards */
+    .cr-float-wrap { position: relative; padding: 40px 20px; }
+    .cr-float-card {
+      position: absolute;
+      background: var(--ar-secondary-bg);
+      border: 1px solid var(--ar-border-color);
+      border-radius: var(--ar-border-radius-lg);
+      padding: 12px 14px; min-width: 160px; z-index: 10;
+    }
+    .cr-float-card.fc-tr { top: 8px; right: -8px; animation: crFloat 4s ease-in-out infinite; }
+    .cr-float-card.fc-bl { bottom: 8px; left: -8px; animation: crFloat 4s ease-in-out infinite 2s; }
+    .cr-fc-lbl { font-size: .65rem; color: var(--ar-secondary-color); text-transform: uppercase; letter-spacing: .05em; }
+    .cr-fc-val { font-size: .95rem; font-weight: 700; font-family: var(--ar-font-monospace); margin-top: 3px; }
+    .cr-fc-bar { height: 4px; background: var(--ar-border-color); border-radius: 2px; margin-top: 8px; overflow: hidden; }
+    .cr-fc-fill { height: 100%; background: linear-gradient(90deg, var(--ar-primary), #3f7fca); border-radius: 2px; }
+
+    @keyframes crFloat {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-8px); }
+    }
+
+    /* Section helpers */
+    .cr-section { padding: 80px 0; }
+    .cr-section-alt { background: var(--ar-secondary-bg); }
+    .cr-eyebrow {
+      display: inline-block; font-size: .7rem; font-weight: 600;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: var(--ar-primary); margin-bottom: .75rem;
+    }
+
+    /* Pipeline */
+    .cr-pipeline { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 3rem; }
+    .cr-pipe-step {
+      background: var(--ar-secondary-bg); border: 1px solid var(--ar-border-color);
+      border-radius: var(--ar-border-radius); padding: 12px 14px; text-align: center; min-width: 96px;
+    }
+    .cr-pipe-step.active { background: rgba(68,140,116,.1); border-color: rgba(68,140,116,.4); }
+    .cr-pipe-num { font-size: .65rem; font-family: var(--ar-font-monospace); color: var(--ar-primary); font-weight: 600; margin-bottom: 4px; }
+    .cr-pipe-lbl { font-size: .75rem; font-weight: 600; color: var(--ar-heading-color); line-height: 1.4; }
+    .cr-pipe-lbl small { color: var(--ar-secondary-color); font-weight: 400; display: block; }
+    .cr-pipe-arrow { color: var(--ar-secondary-color); font-size: 1rem; }
+
+    /* Metric cards */
+    .cr-metric-val { font-size: 2rem; font-weight: 700; font-family: var(--ar-font-monospace); }
+    .cr-metric-lbl { font-size: .75rem; font-weight: 600; color: var(--ar-secondary-color); margin-top: 4px; }
+    .cr-metric-sub { font-size: .65rem; color: var(--ar-secondary-color); margin-top: 2px; }
+
+    /* Chart containers */
+    .cr-chart-card {
+      background: var(--ar-secondary-bg); border: 1px solid var(--ar-border-color);
+      border-radius: var(--ar-border-radius-xxl); padding: 1.5rem;
+    }
+    .cr-chart-title { font-size: .85rem; font-weight: 600; color: var(--ar-heading-color); margin-bottom: 1rem; }
+
+    /* Stage cards */
+    .cr-stage-card {
+      background: var(--ar-secondary-bg); border: 1px solid var(--ar-border-color);
+      border-radius: var(--ar-border-radius-xxl); padding: 1.75rem 1.5rem;
+      transition: transform .25s ease;
+    }
+    .cr-stage-card:hover { transform: translateY(-4px); }
+    .cr-stage-card.s1 { border-top: 3px solid var(--ar-success); }
+    .cr-stage-card.s2 { border-top: 3px solid var(--ar-warning); }
+    .cr-stage-card.s3 { border-top: 3px solid var(--ar-danger); }
+    .cr-stage-badge { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; }
+    .cr-stage-thresh { font-size: 1.4rem; font-weight: 700; font-family: var(--ar-font-monospace); color: var(--ar-heading-color); }
+    .cr-stage-status { font-size: .8rem; color: var(--ar-secondary-color); margin-top: 4px; }
+    .cr-stage-stat { display: flex; justify-content: space-between; padding: 5px 0; }
+    .cr-stage-stat-v { font-size: .9rem; font-weight: 700; font-family: var(--ar-font-monospace); color: var(--ar-heading-color); }
+    .cr-stage-stat-l { font-size: .75rem; color: var(--ar-secondary-color); }
+    .cr-stage-prov { font-size: .65rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--ar-secondary-color); margin-top: .75rem; }
+    hr.cr-hr { border-color: var(--ar-border-color); opacity: 1; margin: 1rem 0; }
+
+    /* Tech pills */
+    .cr-tech-grid { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+    .cr-tech-pill {
+      background: var(--ar-secondary-bg); border: 1px solid var(--ar-border-color);
+      border-radius: 50rem; padding: 8px 18px; font-size: .85rem; font-weight: 500;
+      color: var(--ar-secondary-color); transition: background .2s, border-color .2s, color .2s; cursor: default;
+    }
+    .cr-tech-pill:hover { background: rgba(68,140,116,.1); border-color: rgba(68,140,116,.4); color: var(--ar-primary); }
+
+    /* Prediction form */
+    .cr-form-card {
+      background: var(--ar-secondary-bg); border: 1px solid var(--ar-border-color);
+      border-radius: var(--ar-border-radius-xxl); padding: 1.75rem;
+    }
+    .cr-form-section-title { font-size: .9rem; font-weight: 600; color: var(--ar-heading-color); }
+
+    /* Result panel */
+    .cr-result-panel {
+      background: var(--ar-secondary-bg); border: 1px solid var(--ar-border-color);
+      border-radius: var(--ar-border-radius-xxl); padding: 1.75rem;
+      min-height: 500px; display: flex; flex-direction: column;
+    }
+    .cr-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; text-align: center; }
+    .cr-placeholder-icon { font-size: 3rem; color: var(--ar-border-color); margin-bottom: 1rem; }
+    .cr-pd-number { font-size: 2.75rem; font-weight: 800; font-family: var(--ar-font-monospace); text-align: center; }
+    .cr-pd-label { font-size: .75rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--ar-secondary-color); text-align: center; margin-top: 4px; }
+
+    /* Risk bar */
+    .cr-risk-track {
+      position: relative; height: 28px; border-radius: 50rem; overflow: visible;
+      border: 1px solid var(--ar-border-color);
+      background: linear-gradient(90deg,
+        rgba(63,202,144,.25) 0% 33%,
+        rgba(237,203,80,.25) 33% 66%,
+        rgba(237,80,80,.25) 66% 100%
+      );
+    }
+    .cr-risk-zones { display: flex; height: 100%; border-radius: 50rem; overflow: hidden; }
+    .cr-rz { flex: 1; display: flex; align-items: center; justify-content: center; font-size: .6rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+    .cr-rz.g { color: var(--ar-success); } .cr-rz.a { color: var(--ar-warning); } .cr-rz.r { color: var(--ar-danger); }
+    .cr-needle {
+      position: absolute; top: 50%; transform: translate(-50%, -50%);
+      width: 14px; height: 14px; border-radius: 50%; background: #fff;
+      border: 2px solid rgba(0,0,0,.3); box-shadow: 0 0 6px rgba(255,255,255,.4);
+      transition: left .6s cubic-bezier(.34,1.56,.64,1);
+    }
+
+    /* Mini result cards */
+    .cr-mini-card {
+      background: rgba(255,255,255,.04); border: 1px solid var(--ar-border-color);
+      border-radius: var(--ar-border-radius); padding: 12px 8px; text-align: center;
+    }
+    .cr-mini-lbl { font-size: .6rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--ar-secondary-color); margin-bottom: 4px; }
+    .cr-mini-val { font-size: .95rem; font-weight: 700; font-family: var(--ar-font-monospace); color: var(--ar-heading-color); }
+
+    /* Recommendation */
+    .cr-rec {
+      background: rgba(68,140,116,.08); border: 1px solid rgba(68,140,116,.2);
+      border-radius: var(--ar-border-radius); padding: 14px;
+    }
+    .cr-rec-title { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--ar-primary); margin-bottom: 6px; }
+    .cr-rec-body { font-size: .8rem; color: var(--ar-secondary-color); line-height: 1.6; }
+
+    /* Stage result border colours */
+    .cr-stage-result-1 { border-color: rgba(63,202,144,.4) !important; background: rgba(63,202,144,.06) !important; }
+    .cr-stage-result-2 { border-color: rgba(237,203,80,.4)  !important; background: rgba(237,203,80,.06)  !important; }
+    .cr-stage-result-3 { border-color: rgba(237,80,80,.4)   !important; background: rgba(237,80,80,.06)   !important; }
+
+    /* Table */
+    .cr-compare-table th { font-size: .7rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--ar-secondary-color); border-bottom: 1px solid var(--ar-border-color) !important; padding: 10px 12px; }
+    .cr-compare-table td { color: var(--ar-secondary-color); border-bottom: 1px solid var(--ar-border-color) !important; padding: 10px 12px; vertical-align: middle; }
+
+    /* Footer */
+    .cr-footer { background: var(--ar-secondary-bg); border-top: 1px solid var(--ar-border-color); padding: 40px 0; }
+    .cr-footer-brand { font-size: 1.2rem; font-weight: 700; color: var(--ar-heading-color); }
+    .cr-footer-link { font-size: .8rem; color: var(--ar-secondary-color); text-decoration: none; transition: color .2s; }
+    .cr-footer-link:hover { color: var(--ar-primary); }
+
+    /* Spinner */
+    .cr-spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.3); border-top-color: #fff; border-radius: 50%; display: inline-block; animation: crSpin .6s linear infinite; margin-right: 8px; vertical-align: middle; }
+    @keyframes crSpin { to { transform: rotate(360deg); } }
+
+    /* Responsive */
+    @media (max-width: 991.98px) {
+      .cr-float-wrap { display: none; }
+      .cr-pipeline { flex-direction: column; align-items: flex-start; }
+      .cr-pipe-arrow { transform: rotate(90deg); }
+    }
+    @media (max-width: 575.98px) {
+      .cr-section { padding: 56px 0; }
+      .cr-stat-row { gap: 1rem; }
+      .cr-stat-val { font-size: 1.25rem; }
+    }
+
+    /* Fade-in animation */
+    @keyframes crFadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:none; } }
+    .cr-anim { animation: crFadeUp .5s ease both; }
+    .cr-anim-1 { animation-delay: .1s; }
+    .cr-anim-2 { animation-delay: .2s; }
+    .cr-anim-3 { animation-delay: .3s; }
+    .cr-anim-4 { animation-delay: .4s; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════ PREDICT -->
+<section id="predict" class="cr-section cr-section-alt">
+  <div class="container">
+    <div class="text-center mb-5">
+      <div class="cr-eyebrow">Live Demo</div>
+      <h2 class="h1 fw-bold">Predict Default Probability</h2>
+      <p class="lead" style="font-size:.9rem;max-width:540px;margin:1rem auto 0;">
+        Enter loan details below. Returns PD estimate, IFRS9 stage, ECL, and risk charts.
+      </p>
+    </div>
+
+    <div class="row g-4">
+      <!-- Form -->
+      <div class="col-lg-7">
+        <div class="cr-form-card">
+          <div class="cr-form-section-title mb-4"><i class="bi bi-file-earmark-text me-2"></i>Loan Application Details</div>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Loan Amount ($)</label>
+              <input type="number" class="form-control" id="loan_amnt" value="15000" min="1000" max="40000" placeholder="e.g. 15000"/>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Interest Rate (%)</label>
+              <input type="number" class="form-control" id="int_rate" value="13.5" step="0.01" min="5" max="36" placeholder="e.g. 13.5"/>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Annual Income ($)</label>
+              <input type="number" class="form-control" id="annual_inc" value="60000" min="10000" placeholder="e.g. 60000"/>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Debt-to-Income Ratio (%)</label>
+              <input type="number" class="form-control" id="dti" value="18.5" step="0.1" min="0" max="100" placeholder="e.g. 18.5"/>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Employment Length</label>
+              <select class="form-select" id="emp_length">
+                <option value="0">&lt; 1 year</option><option value="1">1 year</option><option value="2">2 years</option>
+                <option value="3">3 years</option><option value="4">4 years</option><option value="5" selected>5 years</option>
+                <option value="6">6 years</option><option value="7">7 years</option><option value="8">8 years</option>
+                <option value="9">9 years</option><option value="10">10+ years</option><option value="-1">Unknown</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Home Ownership</label>
+              <select class="form-select" id="home_ownership">
+                <option value="RENT" selected>Rent</option><option value="OWN">Own</option>
+                <option value="MORTGAGE">Mortgage</option><option value="OTHER">Other</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Loan Purpose</label>
+              <select class="form-select" id="purpose">
+                <option value="debt_consolidation" selected>Debt Consolidation</option>
+                <option value="credit_card">Credit Card Refinancing</option>
+                <option value="home_improvement">Home Improvement</option>
+                <option value="major_purchase">Major Purchase</option>
+                <option value="medical">Medical</option>
+                <option value="car">Car</option>
+                <option value="small_business">Small Business</option>
+                <option value="vacation">Vacation</option>
+                <option value="moving">Moving</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Revolving Utilisation (%)</label>
+              <input type="number" class="form-control" id="revol_util" value="55.0" step="0.1" min="0" max="100"/>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Loan Grade</label>
+              <select class="form-select" id="grade" onchange="updateSubgrade()">
+                <option value="A">A — Lowest Risk</option><option value="B">B</option>
+                <option value="C" selected>C</option><option value="D">D</option>
+                <option value="E">E</option><option value="F">F</option><option value="G">G — Highest Risk</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Sub Grade</label>
+              <select class="form-select" id="sub_grade">
+                <option value="C1" selected>C1</option><option value="C2">C2</option>
+                <option value="C3">C3</option><option value="C4">C4</option><option value="C5">C5</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Total Credit Accounts</label>
+              <input type="number" class="form-control" id="total_acc" value="22" min="1" max="100"/>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Public Derogatory Records</label>
+              <input type="number" class="form-control" id="pub_rec" value="0" min="0" max="20"/>
+            </div>
+          </div>
+          <div class="d-grid mt-4">
+            <button class="btn btn-primary btn-lg" id="predictBtn" onclick="runPrediction()">
+              <i class="bi bi-cpu me-2"></i>
+              <span id="predictBtnText">Calculate Default Probability</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results panel -->
+      <div class="col-lg-5">
+        <div class="cr-result-panel" id="resultPanel">
+          <div id="resultPlaceholder" class="cr-placeholder">
+            <div class="cr-placeholder-icon"><i class="bi bi-cpu"></i></div>
+            <p style="color:var(--ar-secondary-color);">Fill in the loan details and click<br><strong style="color:var(--ar-heading-color);">Calculate Default Probability</strong></p>
+            <p style="font-size:.8rem;color:var(--ar-secondary-color);margin-top:.5rem;">Results show PD score, IFRS9 stage,<br>ECL estimate, and risk charts.</p>
+          </div>
+
+          <div id="resultContent" style="display:none;">
+            <!-- Gauge -->
+            <div class="text-center mb-3">
+              <canvas id="gaugeChart" width="200" height="120" style="display:block;margin:0 auto;"></canvas>
+              <div id="pdValueDisplay" class="cr-pd-number"></div>
+              <div class="cr-pd-label">Probability of Default</div>
+            </div>
+
+            <!-- Risk bar -->
+            <div class="mb-4" style="padding:0 4px;">
+              <div class="cr-risk-track">
+                <div class="cr-risk-zones">
+                  <div class="cr-rz g">Low</div>
+                  <div class="cr-rz a">Medium</div>
+                  <div class="cr-rz r">High</div>
+                </div>
+                <div class="cr-needle" id="riskNeedle"></div>
+              </div>
+            </div>
+
+            <!-- Mini cards -->
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <div class="cr-mini-card" id="stageCard">
+                  <div class="cr-mini-lbl">IFRS9 Stage</div>
+                  <div class="cr-mini-val" id="resultStage">—</div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="cr-mini-card">
+                  <div class="cr-mini-lbl">Expected Loss</div>
+                  <div class="cr-mini-val" style="color:var(--ar-warning);" id="resultECL">—</div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="cr-mini-card">
+                  <div class="cr-mini-lbl">Risk Category</div>
+                  <div class="cr-mini-val" id="resultRisk">—</div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="cr-mini-card">
+                  <div class="cr-mini-lbl">Decision</div>
+                  <div class="cr-mini-val" id="resultDecision">—</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Radar -->
+            <div class="mb-3">
+              <canvas id="radarChart" height="200"></canvas>
+            </div>
+
+            <!-- Recommendation -->
+            <div class="cr-rec">
+              <div class="cr-rec-title"><i class="bi bi-lightbulb me-2"></i>Recommendation</div>
+              <div class="cr-rec-body" id="recommendationText"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ FOOTER -->
+<footer class="cr-footer">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-6 mb-3 mb-md-0">
+        <div class="cr-footer-brand">CreditRisk<span style="color:var(--ar-primary);">PD</span></div>
+        <p style="font-size:.8rem;color:var(--ar-secondary-color);margin:.5rem 0 0;">End-to-end credit risk modelling pipeline.<br></p>
+      </div>
+      <div class="col-md-6 text-md-end">
+        <div style="font-size:.85rem;color:var(--ar-secondary-color);margin-bottom:.5rem;">
+          <strong style="color:var(--ar-heading-color);">Manish Kumar</strong> — MBA Business Economics, DBE, University of Delhi
+        </div>
+        <div class="d-flex gap-3 justify-content-md-end">
+          <a href="https://linkedin.com/in/manish-kumarrr" target="_blank" class="cr-footer-link"><i class="bi bi-linkedin me-1"></i>LinkedIn</a>
+          <a href="https://github.com/YOUR_USERNAME" target="_blank" class="cr-footer-link"><i class="bi bi-github me-1"></i>GitHub</a>
+          <a href="mailto:your.email@example.com" class="cr-footer-link"><i class="bi bi-envelope me-1"></i>Email</a>
+        </div>
+        <div style="font-size:.75rem;color:var(--ar-secondary-color);margin-top:.5rem;">© 2025 MIT License</div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Bootstrap JS (included in Around theme bundle) -->
+<script src="https://around.createx.studio/assets/js/theme.min.js"></script>
+
+<!-- ═══════════════════════════════════════════════ ALL JS INLINE -->
+<script>
+'use strict';
+
+/* ── Around theme CSS vars mapped to chart colours ────────── */
+const C = {
+  primary:  '#448c74',
+  success:  '#3fca90',
+  warning:  '#edcb50',
+  danger:   '#ed5050',
+  info:     '#3f7fca',
+  text:     'rgba(255,255,255,0.5)',
+  grid:     'rgba(255,255,255,0.07)',
+  bg:       'rgba(255,255,255,0.03)',
+};
+
+/* ── Chart.js global defaults ───────────────────────────────── */
+Chart.defaults.color       = C.text;
+Chart.defaults.font.family = 'Inter, sans-serif';
+Chart.defaults.font.size   = 11;
+Chart.defaults.plugins.legend.labels.boxWidth = 12;
+
+/* ── Chart instances ──────────────────────────────────────── */
+let heroInst, rocInst, ivInst, donutInst, eclInst, gaugeInst, radarInst;
+
+/* ── Encoding maps ────────────────────────────────────────── */
+const GRADE_ENC    = { A:0, B:1, C:2, D:3, E:4, F:5, G:6 };
+const SUBGRADE_ENC = {};
+['A','B','C','D','E','F','G'].forEach((g,gi) => {
+  [1,2,3,4,5].forEach((n,ni) => { SUBGRADE_ENC[`${g}${n}`] = gi*5+ni; });
+});
+const HOME_ENC    = { RENT:0, OWN:1, MORTGAGE:2, OTHER:3 };
+const PURPOSE_ENC = { debt_consolidation:0, credit_card:1, home_improvement:2, major_purchase:3, medical:4, car:5, small_business:6, vacation:7, moving:8, other:9 };
+
+/* ── LR coefficients (StandardScaler-normalised weights) ─── */
+const COEF = {
+  int_rate:.48, sub_grade_enc:.44, grade_enc:.38,
+  loan_to_income:.22, installment_burden:.19, dti:.16,
+  revol_util:.12, home_ownership_enc:-.08,
+  annual_inc:-.15, pub_rec:.14, total_acc:-.05,
+};
+const INTERCEPT = -1.85;
+const LGD = 0.45;
+
+/* ── Normalisation stats from training data ─────────────── */
+const MEANS = { int_rate:13.26, sub_grade_enc:12.5, grade_enc:2.5, loan_to_income:.28, installment_burden:.09, dti:18.2, revol_util:54.8, home_ownership_enc:.8, annual_inc:75000, pub_rec:.18, total_acc:25.4 };
+const STDS  = { int_rate:4.8,   sub_grade_enc:8.2,  grade_enc:1.7, loan_to_income:.22, installment_burden:.07, dti:11.5, revol_util:24.3, home_ownership_enc:.9, annual_inc:65000, pub_rec:.55, total_acc:12.1 };
+
+/* ─────────────────────────────────────────────────────────────
+   PREDICTION ENTRY POINT
+   To switch to Flask: replace simulatePD(inputs) with
+   fetchFromAPI(inputs) — everything else stays the same.
+───────────────────────────────────────────────────────────── */
+async function runPrediction() {
+  const btn    = document.getElementById('predictBtn');
+  const btnTxt = document.getElementById('predictBtnText');
+  btnTxt.innerHTML = '<span class="cr-spinner"></span>Calculating…';
+  btn.disabled = true;
+  try {
+    const inputs = collectInputs();
+    const result = await simulatePD(inputs);   // ← swap this for fetchFromAPI(inputs)
+    renderResults(result);
+  } catch(e) {
+    console.error(e);
+    alert('Something went wrong. Check console.');
+  } finally {
+    btnTxt.innerHTML = '<i class="bi bi-cpu me-2"></i>Calculate Default Probability';
+    btn.disabled = false;
+  }
+}
+
+function collectInputs() {
+  const loanAmnt  = +document.getElementById('loan_amnt').value  || 15000;
+  const intRate   = +document.getElementById('int_rate').value   || 13.5;
+  const annualInc = +document.getElementById('annual_inc').value || 60000;
+  const dti       = +document.getElementById('dti').value        || 18.5;
+  const revolUtil = +document.getElementById('revol_util').value || 55;
+  const totalAcc  = +document.getElementById('total_acc').value  || 22;
+  const pubRec    = +document.getElementById('pub_rec').value    || 0;
+  const grade     = document.getElementById('grade').value;
+  const subGrade  = document.getElementById('sub_grade').value;
+  const homeOwn   = document.getElementById('home_ownership').value;
+  const purpose   = document.getElementById('purpose').value;
+
+  const installment       = (loanAmnt*(intRate/100/12)) / (1-Math.pow(1+intRate/100/12,-36));
+  const loan_to_income    = loanAmnt / (annualInc+1);
+  const installment_burden= installment / ((annualInc/12)+1);
+
+  return { loanAmnt, intRate, annualInc, dti, revolUtil, totalAcc, pubRec, grade, subGrade, homeOwn, purpose, installment, loan_to_income, installment_burden,
+    grade_enc:          GRADE_ENC[grade] ?? 2,
+    sub_grade_enc:      SUBGRADE_ENC[subGrade] ?? 10,
+    home_ownership_enc: HOME_ENC[homeOwn] ?? 0,
+    purpose_enc:        PURPOSE_ENC[purpose] ?? 0,
+  };
+}
+
+async function simulatePD(inp) {
+  await new Promise(r => setTimeout(r, 750));
+  let logit = INTERCEPT;
+  for (const [k, coef] of Object.entries(COEF)) {
+    const raw = { int_rate:inp.intRate, sub_grade_enc:inp.sub_grade_enc, grade_enc:inp.grade_enc,
+      loan_to_income:inp.loan_to_income, installment_burden:inp.installment_burden,
+      dti:inp.dti, revol_util:inp.revolUtil, home_ownership_enc:inp.home_ownership_enc,
+      annual_inc:inp.annualInc, pub_rec:inp.pubRec, total_acc:inp.totalAcc }[k] ?? 0;
+    logit += coef * ((raw - (MEANS[k]||0)) / ((STDS[k]||1)||1));
+  }
+  const pd  = Math.min(.95, Math.max(.02, 1/(1+Math.exp(-logit))));
+  const ecl = pd * LGD * inp.loanAmnt;
+  const stage = pd < .05 ? 1 : pd < .20 ? 2 : 3;
+  const riskCategory = pd < .15 ? 'Low Risk' : pd < .40 ? 'Medium Risk' : 'High Risk';
+  const decision     = pd < .15 ? 'Approve'  : pd < .30 ? 'Review'      : pd < .50 ? 'Caution' : 'Decline';
+  const radarScores  = {
+    'Interest Rate':  Math.min(100,(inp.intRate/36)*100),
+    'DTI Ratio':      Math.min(100,(inp.dti/50)*100),
+    'Loan Burden':    Math.min(100,inp.installment_burden*600),
+    'Credit Util':    Math.min(100,inp.revolUtil),
+    'Loan-to-Income': Math.min(100,inp.loan_to_income*250),
+    'Public Records': Math.min(100,inp.pubRec*50),
+  };
+  return { pd, ecl, stage, riskCategory, decision, radarScores };
+}
+
+/* Flask API version — swap simulatePD with this when backend ready */
+async function fetchFromAPI(inp) {
+  const res = await fetch('http://localhost:5000/predict', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ loan_amnt:inp.loanAmnt, int_rate:inp.intRate, annual_inc:inp.annualInc,
+      dti:inp.dti, home_ownership:inp.homeOwn, purpose:inp.purpose, revol_util:inp.revolUtil,
+      grade:inp.grade, sub_grade:inp.subGrade, total_acc:inp.totalAcc, pub_rec:inp.pubRec }),
+  });
+  if (!res.ok) throw new Error(`API ${res.status}`);
+  return res.json();
+}
+
+/* ── Render all results ─────────────────────────────────────── */
+function renderResults({ pd, ecl, stage, riskCategory, decision, radarScores }) {
+  document.getElementById('resultPlaceholder').style.display = 'none';
+  document.getElementById('resultContent').style.display     = 'block';
+
+  const col = pdColor(pd);
+  document.getElementById('pdValueDisplay').textContent = (pd*100).toFixed(1)+'%';
+  document.getElementById('pdValueDisplay').style.color = col;
+  document.getElementById('riskNeedle').style.left = Math.min(96,Math.max(4,pd*100))+'%';
+
+  const stageLabels = { 1:'Stage 1', 2:'Stage 2', 3:'Stage 3' };
+  const sc = document.getElementById('stageCard');
+  sc.className = `cr-mini-card cr-stage-result-${stage}`;
+  document.getElementById('resultStage').textContent   = stageLabels[stage];
+  document.getElementById('resultStage').style.color   = stageColor(stage);
+  document.getElementById('resultECL').textContent     = '$'+Math.round(ecl).toLocaleString();
+  document.getElementById('resultRisk').textContent    = riskCategory;
+  document.getElementById('resultRisk').style.color    = col;
+  document.getElementById('resultDecision').textContent= decision;
+  document.getElementById('resultDecision').style.color= decisionColor(decision);
+  document.getElementById('recommendationText').textContent = buildRec(pd, stage);
+
+  drawGauge(pd);
+  drawRadar(radarScores);
+}
+
+function drawGauge(pd) {
+  if (gaugeInst) gaugeInst.destroy();
+  gaugeInst = new Chart(document.getElementById('gaugeChart').getContext('2d'), {
+    type: 'doughnut',
+    data: { datasets: [{ data:[pd,1-pd], backgroundColor:[pdColor(pd),'rgba(255,255,255,.05)'], borderWidth:0, circumference:180, rotation:270 }] },
+    options: { responsive:false, cutout:'72%', plugins:{ legend:{display:false}, tooltip:{enabled:false} }, animation:{ duration:800, easing:'easeOutQuart' } },
+  });
+}
+
+function drawRadar(scores) {
+  if (radarInst) radarInst.destroy();
+  radarInst = new Chart(document.getElementById('radarChart').getContext('2d'), {
+    type: 'radar',
+    data: { labels: Object.keys(scores), datasets:[{ label:'Risk factors', data:Object.values(scores), backgroundColor:'rgba(68,140,116,.15)', borderColor:C.primary, borderWidth:2, pointBackgroundColor:C.primary, pointRadius:3 }] },
+    options: { responsive:true, scales:{ r:{ min:0,max:100, grid:{color:C.grid}, angleLines:{color:C.grid}, ticks:{display:false}, pointLabels:{font:{size:10},color:C.text} } }, plugins:{legend:{display:false}}, animation:{duration:600} },
+  });
+}
+
+function buildRec(pd, stage) {
+  if (pd<.15) return 'Low default risk. This application can be approved at the current rate. Stage 1 classification means a 12-month ECL provision is sufficient.';
+  if (pd<.30) return 'Moderate risk. Consider requesting additional collateral or reducing the loan amount. A shorter tenure may lower the PD below the 20% Stage 3 threshold.';
+  if (pd<.50) return 'Elevated risk (Stage 3). Full lifetime ECL provisioning required. Consider declining or reducing the loan amount significantly with stricter repayment monitoring.';
+  return `High default risk (PD ${(pd*100).toFixed(0)}%). Recommend declining this application. Primary drivers: high interest rate and DTI. Refer applicant to financial counselling.`;
+}
+
+/* ── Colour helpers ──────────────────────────────────────── */
+function pdColor(pd)       { return pd<.15?C.success:pd<.35?C.warning:C.danger; }
+function stageColor(s)     { return {1:C.success,2:C.warning,3:C.danger}[s]??C.text; }
+function decisionColor(d)  { return {Approve:C.success,Review:C.warning,Caution:C.warning,Decline:C.danger}[d]??C.text; }
+
+/* ── Sub-grade dropdown update ────────────────────────────── */
+function updateSubgrade() {
+  const g = document.getElementById('grade').value;
+  document.getElementById('sub_grade').innerHTML =
+    [1,2,3,4,5].map(n=>`<option value="${g}${n}">${g}${n}</option>`).join('');
+}
+
+/* ── Navbar scroll effect ─────────────────────────────────── */
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('mainNav');
+  nav.style.background = window.scrollY>60 ? 'rgba(18,21,25,.98)' : 'rgba(18,21,25,.9)';
+});
+
+/* ── Initialise all static charts on load ─────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  // Hero chart — PD distribution
+  heroInst = new Chart(document.getElementById('heroChart').getContext('2d'), {
+    type:'bar',
+    data:{ labels:['0–5%','5–10%','10–20%','20–30%','30–40%','40–50%','50%+'],
+           datasets:[{ data:[55,6631,22128,28046,31120,30943,82287],
+             backgroundColor:[C.success,C.warning,C.danger,C.danger,C.danger,C.danger,C.danger],
+             borderWidth:0, borderRadius:3 }] },
+    options:{ responsive:true, plugins:{legend:{display:false},tooltip:{enabled:false}}, scales:{x:{display:false},y:{display:false}}, animation:{duration:1200} },
+  });
+
+  // ROC curve
+  function rocPts(auc,n=40) {
+    const pts=[{x:0,y:0}];
+    for(let i=1;i<n;i++){const fpr=i/n; pts.push({x:Math.round(fpr*100)/100,y:Math.min(1,auc*fpr+(1-auc)*Math.pow(fpr,.35))});}
+    pts.push({x:1,y:1}); return pts;
+  }
+  rocInst = new Chart(document.getElementById('rocChart').getContext('2d'),{
+    type:'scatter',
+    data:{ datasets:[
+      {label:'Logistic Reg (AUC 0.668)',data:rocPts(.6679),borderColor:C.info, backgroundColor:'transparent',showLine:true,tension:.3,pointRadius:0,borderWidth:2},
+      {label:'Random Forest (AUC 0.689)',data:rocPts(.6889),borderColor:C.warning,backgroundColor:'transparent',showLine:true,tension:.3,pointRadius:0,borderWidth:2},
+      {label:'Random baseline',data:[{x:0,y:0},{x:1,y:1}],borderColor:'rgba(255,255,255,.15)',backgroundColor:'transparent',showLine:true,pointRadius:0,borderDash:[5,5],borderWidth:1},
+    ]},
+    options:{ responsive:true, plugins:{legend:{position:'bottom',labels:{color:C.text}}},
+      scales:{ x:{title:{display:true,text:'False Positive Rate',color:C.text},grid:{color:C.grid},min:0,max:1},
+               y:{title:{display:true,text:'True Positive Rate',color:C.text},grid:{color:C.grid},min:0,max:1} } },
+  });
+
+  // IV bar chart
+  ivInst = new Chart(document.getElementById('ivChart').getContext('2d'),{
+    type:'bar',
+    data:{ labels:['sub_grade','int_rate','grade','loan_to_income','install_burden','dti','loan_amnt','revol_util'],
+           datasets:[{ label:'IV score', data:[.479,.446,.398,.119,.096,.074,.034,.026],
+             backgroundColor:[C.danger,C.danger,C.danger,C.warning,C.warning,C.info,C.info,C.info],
+             borderWidth:0, borderRadius:4 }] },
+    options:{ indexAxis:'y', responsive:true, plugins:{legend:{display:false}},
+      scales:{x:{grid:{color:C.grid},ticks:{color:C.text}},y:{grid:{display:false},ticks:{color:C.text}}} },
+  });
+
+  // IFRS9 donut
+  donutInst = new Chart(document.getElementById('ifrs9DonutChart').getContext('2d'),{
+    type:'doughnut',
+    data:{ labels:['Stage 1 (PD<5%)','Stage 2 (PD 5–20%)','Stage 3 (PD>20%)'],
+           datasets:[{ data:[55,19444,241711], backgroundColor:[C.success,C.warning,C.danger], borderWidth:2, borderColor:'rgba(18,21,25,.8)', hoverOffset:8 }] },
+    options:{ responsive:true, cutout:'60%', plugins:{ legend:{position:'bottom',labels:{color:C.text,padding:16}},
+      tooltip:{callbacks:{label:ctx=>{const t=261210;return ` ${ctx.label}: ${ctx.raw.toLocaleString()} (${(ctx.raw/t*100).toFixed(1)}%)`;}}} },
+      animation:{duration:1000,easing:'easeOutQuart'} },
+  });
+
+  // ECL bar
+  eclInst = new Chart(document.getElementById('eclChart').getContext('2d'),{
+    type:'bar',
+    data:{ labels:['Stage 1','Stage 2','Stage 3'],
+           datasets:[{ label:'ECL ($M)', data:[.014502,18.302,775.008],
+             backgroundColor:[C.success,C.warning,C.danger], borderWidth:0, borderRadius:6 }] },
+    options:{ responsive:true, plugins:{legend:{display:false},
+      tooltip:{callbacks:{label:ctx=>`$${ctx.raw.toFixed(2)}M`}}},
+      scales:{ x:{grid:{display:false},ticks:{color:C.text}},
+               y:{grid:{color:C.grid},ticks:{color:C.text,callback:v=>'$'+v.toFixed(0)+'M'}} },
+      animation:{duration:1000,easing:'easeOutQuart'} },
+  });
+});
+</script>
+
+</body>
+</html>
